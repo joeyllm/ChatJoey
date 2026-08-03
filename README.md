@@ -26,3 +26,5 @@ Open [http://localhost:3000](http://localhost:3000).
 pnpm lint
 pnpm build
 ```
+## Vercel
+Open [https://chatjoey-xiangchang.vercel.app/](https://chatjoey-xiangchang.vercel.app/)
