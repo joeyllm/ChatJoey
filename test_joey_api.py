@@ -1,8 +1,14 @@
 import json
+import os
 import requests
 
-BASE_URL = "https://api.joeyllm.ai"
-API_KEY = "s/xpNZuN6V1LnPfHuNipDMKeQKyFfn2Ml0/S2QOy/14="
+BASE_URL = os.environ.get("JOEYLLM_API_URL", "").rstrip("/")
+API_KEY = os.environ.get("JOEYLLM_API_KEY", "")
+
+if not BASE_URL or not API_KEY:
+    raise SystemExit(
+        "Set JOEYLLM_API_URL and JOEYLLM_API_KEY before running this script."
+    )
 
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
@@ -21,7 +27,7 @@ models.raise_for_status()
 model = models.json()["data"][0]["id"]
 
 print("Joey API")
-print("Model JoeyLLM")
+print(f"Selected model: {model}")
 print("Type 'exit' to quit.\n")
 
 messages = []
