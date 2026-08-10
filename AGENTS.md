@@ -52,6 +52,14 @@ docs/CURRENT_STATE.md for what, if anything, has actually been merged.
 
 New work should branch from `main` and return through pull requests.
 
+## History
+
+The current implementation was consolidated from the Yingzhe_Xu
+prototype branch by an AI coding agent (Codex), merged as PR #4 on
+2026-08-10. That work is now fully represented in `main`; the
+`codex/consolidate-yingzhe-xu` branch was deleted after the merge
+since it held nothing beyond what `main` already has.
+
 ## Documentation
 
 If a change alters architecture, update `docs/ARCHITECTURE.md`
