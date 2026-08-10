@@ -1,50 +1,63 @@
 # Current State
 
-_Last updated: 2026-08-07_
+_Last updated: 2026-08-10_
 
 ## `main`
 
-No chat implementation yet. Contains only `README.md`, `AGENTS.md`, and
-this `docs/` folder. Nothing has been merged from the prototype branches
-below.
+The team selected the former `Yingzhe_Xu` prototype as the canonical
+frontend baseline and consolidated it into the architecture defined by this
+repository.
 
-## Unmerged prototype branches
+Implemented:
 
-Five students independently built a full frontend prototype of the same
-brief in one sprint (all dated 2026-08-03), before any consolidation
-decision was made. None of these are canonical — they exist for comparison
-only, and should not be treated as the current architecture:
+- Next.js 16.2.12 App Router application using TypeScript and CSS Modules;
+- responsive chat interface for desktop and narrow windows;
+- English, French, Chinese, Russian, Spanish, and Japanese UI switching;
+- semantic structure, explicit labels, keyboard submission, visible focus,
+  live status, empty-input protection, and long-message wrapping;
+- browser-to-server `POST /api/chat` contract;
+- server-only JoeyLLM URL and bearer credential handling;
+- real `/v1/models` discovery and `/v1/chat/completions` integration;
+- server-side consumption of JoeyLLM SSE content;
+- explicit local preview mode and visible production configuration errors;
+- Vercel environment and deployment documentation;
+- Qdrant/RAG introductory documentation.
 
-- `origin/chennuo` — most complete integration boundary: a real `/api/chat`
-  route with a `JOEYLLM_API_URL` server-side fallback to an explicit mock
-  mode, light/dark theme, `.env.example` with Qdrant placeholders.
-- `origin/Yingzhe_Xu` — 6-language i18n, accessibility focus, live Vercel
-  deploy, Chinese-language Qdrant/RAG notes (docs only, not implemented).
-- `origin/wen-sun` — richest UI surface area: multi-thread sidebar, file
-  upload UI, model-selector dropdown, own `PROJECT_PROGRESS.md` log.
-- `origin/XiangChang` — lean prototype with source/citation UI stubbed for
-  future retrieval results.
-- `origin/XingyuLi` — lean, polished "Apple-inspired" chat workspace.
+## Runtime boundary
 
-All five are frontend-only: canned/delayed mock replies, no real model or
-Qdrant call anywhere.
+```text
+Browser -> Next.js /api/chat -> JoeyLLM API
+```
 
-## `origin/design` (orphan branch)
+The browser stores the current conversation in React state. `/api/chat`
+validates the conversation and returns one complete assistant message after
+consuming the upstream stream. Credentials remain server-side.
 
-Not code. Bilingual (EN/中文) product definition, user research, personas,
-usage scenarios, and user stories, plus a linked Figma prototype. Hasn't
-been reconciled with any code branch yet.
+## Historical prototype branches
 
-## Not yet implemented anywhere
+`origin/Yingzhe_Xu` is the selected baseline. The other student prototype
+branches remain useful historical comparisons but are not canonical:
 
-- Real JoeyLLM API integration (all branches mock this)
-- Qdrant / RAG retrieval
-- Persistence of chat history
-- Auth
-- Real file-upload handling (existing UI previews filenames only)
+- `origin/chennuo`
+- `origin/wen-sun`
+- `origin/XiangChang`
+- `origin/XingyuLi`
+
+`origin/design` remains the bilingual product and UX documentation branch.
+
+## Not yet implemented
+
+- browser-visible token-by-token streaming;
+- Qdrant connection, embeddings, retrieval, RAG prompt construction, or
+  source citations;
+- persistent conversation storage;
+- authentication and authorisation;
+- real file upload handling;
+- automated browser test suite;
+- production observability beyond platform function logs.
 
 ## Next step
 
-Decide which prototype (or combination) becomes the base for `main`, or
-rebuild from `docs/ARCHITECTURE.md` — see DECISIONS.md for whichever path
-is chosen, and update this file once something actually merges.
+After Sprint 1 deployment is stable, prioritise automated end-to-end tests,
+then design the RAG boundary behind the existing server-side API without
+allowing Qdrant or model credentials into the browser.
