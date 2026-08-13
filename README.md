@@ -27,7 +27,7 @@ Browser
 
 The browser never receives the JoeyLLM API key. The route reads server-only environment variables, selects a configured or available model, consumes JoeyLLM's SSE response, and returns one JSON assistant message to the UI.
 
-See [Architecture](docs/ARCHITECTURE.md), [Current State](docs/CURRENT_STATE.md), and [Decisions](docs/DECISIONS.md) for the maintained project record.
+System-wide architecture, decisions, current state, deployment, and Qdrant/RAG notes live in the sibling [`ChatDocs`](../ChatDocs) repo, not here.
 
 ## Technology stack
 
@@ -85,21 +85,11 @@ Open [http://localhost:3000](http://localhost:3000). Without server credentials,
 
 `package.json` does not define dedicated `test` or `typecheck` scripts. TypeScript validation is included in `npm run build`.
 
-## API smoke test
-
-The repository test uses the same server-only environment variable names:
-
-```bash
-python test_joey_api.py
-```
-
-It first reads `GET /v1/models`, then sends a streaming `POST /v1/chat/completions` request. Do not add a key directly to the script.
-
 ## Deployment
 
 The production Vercel project must define `JOEYLLM_API_URL` and `JOEYLLM_API_KEY` for the Production environment. `JOEYLLM_MODEL` is optional. Do not configure `CHATJOEY_MOCK_MODE=true` in production.
 
-Follow the complete [Vercel deployment guide](docs/DEPLOYMENT.md), including environment verification, redeployment, smoke testing, and rollback guidance.
+Follow the complete [Vercel deployment guide](../ChatDocs/docs/DEPLOYMENT.md), including environment verification, redeployment, smoke testing, and rollback guidance.
 
 ## Project structure
 
@@ -111,14 +101,6 @@ app/
   layout.tsx           Root metadata and layout
   page.module.css      Component-scoped responsive styles
   page.tsx             Chat UI, state, API calls, and language switching
-docs/
-  ARCHITECTURE.md      System boundaries and API contract
-  CURRENT_STATE.md     Implemented and outstanding work
-  DECISIONS.md         Append-only architectural decisions
-  DEPLOYMENT.md        Vercel configuration and deployment checks
-  qdrant-basics.md     Qdrant and future RAG introduction
 ```
 
-## Qdrant and RAG
-
-[Qdrant basics](docs/qdrant-basics.md) explains collections, points, vectors, payloads, similarity search, and the future RAG boundary. It is documentation only: ChatJoey does not currently install or call Qdrant.
+System docs, the Qdrant/RAG introduction, and the API smoke-test script moved to the sibling [`ChatDocs`](../ChatDocs) repo — this repo is app-only.
