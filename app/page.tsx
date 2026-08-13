@@ -47,7 +47,7 @@ const copy = {
   send: "Send",
   hint: "Enter to send · Shift + Enter for a new line",
   disclaimer:
-    "Baby Joey is still learning and can get things wrong. Please check important information.",
+    "Built by Southern Cross AI · Baby Joey is still learning and can get things wrong. Please check important information.",
   requestFailed:
     "Could not reach Joey LLM. Please check the connection and try again.",
   mockReply: (preview: string) =>
