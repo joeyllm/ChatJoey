@@ -198,9 +198,9 @@
 }
 
 .message {
-  max-width: min(88%, 720px);
+  max-width: min(94%, 800px);
   margin: 0;
-  padding: 12px 18px;
+  padding: 12px 24px;
   color: var(--ink);
   background: rgba(74, 122, 94, 0.1);
   border-radius: 14px;
@@ -359,8 +359,8 @@
 }
 
 .inputRow:focus-within {
-  border-color: rgba(74, 122, 94, 0.4);
-  box-shadow: 0 0 0 3px rgba(74, 122, 94, 0.12);
+  border-color: rgba(74, 122, 94, 0.3);
+  box-shadow: 0 0 0 3px rgba(74, 122, 94, 0.08);
 }
 
 .inputRow textarea {
