@@ -149,7 +149,7 @@ export async function POST(request: Request) {
 
   const baseUrlValue = process.env.JOEYLLM_API_URL?.trim();
   const apiKey = process.env.JOEYLLM_API_KEY?.trim();
-  const localMockRequested = process.env.CHATJOEY_MOCK_MODE === "true";
+  const localMockRequested = process.env.JOEYLLM_MOCK_MODE === "true";
   const localPreview =
     process.env.NODE_ENV !== "production" &&
     (localMockRequested || !baseUrlValue || !apiKey);

@@ -45,15 +45,15 @@ Copy `.env.example` to `.env.local` and supply the server-only values:
 JOEYLLM_API_URL=https://api.joeyllm.ai
 JOEYLLM_API_KEY=replace-with-a-current-development-key
 JOEYLLM_MODEL=
-CHATJOEY_MOCK_MODE=false
+JOEYLLM_MOCK_MODE=false
 ```
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `JOEYLLM_API_URL` | Production | JoeyLLM service base URL |
+| `JOEYLLM_API_URL` | Production | Joey LLM service base URL |
 | `JOEYLLM_API_KEY` | Production | Bearer credential used only by the Next.js server |
 | `JOEYLLM_MODEL` | No | Fixed model ID; otherwise the first `/v1/models` result is used |
-| `CHATJOEY_MOCK_MODE` | No | `true` enables explicit local preview mode outside production |
+| `JOEYLLM_MOCK_MODE` | No | `true` enables explicit local preview mode outside production |
 
 Never commit `.env.local`, expose these values through `NEXT_PUBLIC_*`, or paste a key into source code. Production never falls back to mock mode.
 
@@ -86,7 +86,7 @@ Open [http://localhost:3000](http://localhost:3000). Without server credentials,
 
 ## Deployment
 
-The production Vercel project must define `JOEYLLM_API_URL` and `JOEYLLM_API_KEY` for the Production environment. `JOEYLLM_MODEL` is optional. Do not configure `CHATJOEY_MOCK_MODE=true` in production.
+The production Vercel project must define `JOEYLLM_API_URL` and `JOEYLLM_API_KEY` for the Production environment. `JOEYLLM_MODEL` is optional. Do not configure `JOEYLLM_MOCK_MODE=true` in production.
 
 Follow the complete [Vercel deployment guide](../ChatDocs/docs/DEPLOYMENT.md), including environment verification, redeployment, smoke testing, and rollback guidance.
 
