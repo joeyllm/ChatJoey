@@ -15,13 +15,14 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    #b9d9f0 0%,
-    #dcecf4 45%,
-    #eadfc9 72%,
-    #e6cfaa 100%
-  );
+  background:
+    radial-gradient(
+      circle at 82% -2%,
+      rgba(255, 225, 90, 0.38) 0%,
+      rgba(255, 225, 90, 0.18) 14%,
+      transparent 32%
+    ),
+    linear-gradient(180deg, #b9d9f0 0%, #dcecf4 45%, #eee4d3 85%, #ecdec0 100%);
 }
 
 .header {
