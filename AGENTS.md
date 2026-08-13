@@ -1,8 +1,8 @@
-# ChatJoey Agent Instructions
+# Joey LLM Agent Instructions
 
-ChatJoey is the web frontend for JoeyLLM.
+This repo is the web frontend for Joey LLM.
 
-JoeyLLM model serving, Kubernetes infrastructure, GPUs, inference,
+Joey LLM model serving, Kubernetes infrastructure, GPUs, inference,
 and backend services live in a separate project and are not part
 of this repository.
 
@@ -10,14 +10,14 @@ of this repository.
 
 Browser
   ↓
-Next.js ChatJoey
+Next.js app
   ↓
 /api/chat
   ↓
-JoeyLLM API
+Joey LLM API
 
 Future RAG functionality may use Qdrant through an appropriate
-server-side API boundary. See docs/ARCHITECTURE.md for detail.
+server-side API boundary. See `../ChatDocs/docs/ARCHITECTURE.md` for detail.
 
 ## Student Scope
 
@@ -26,20 +26,19 @@ Students primarily work on:
 - Chat interface
 - Conversation UI
 - Accessibility
-- Internationalisation
 - Source/citation presentation
 - File upload UI
-- Frontend integration with the JoeyLLM API
+- Frontend integration with the Joey LLM API
 
 Do not add model-serving or Kubernetes infrastructure here.
 
 ## Before Making Changes
 
-Read:
+Read (in the sibling `ChatDocs` repo):
 
-- docs/ARCHITECTURE.md
-- docs/DECISIONS.md
-- docs/CURRENT_STATE.md
+- `../ChatDocs/docs/ARCHITECTURE.md`
+- `../ChatDocs/docs/DECISIONS.md`
+- `../ChatDocs/docs/CURRENT_STATE.md`
 
 ## Project State
 
@@ -48,7 +47,8 @@ Read:
 Do not treat old student prototype branches as current architecture.
 Several early solo prototype branches (2026-08-03) explored the same
 brief independently before any consolidation into `main` — see
-docs/CURRENT_STATE.md for what, if anything, has actually been merged.
+`../ChatDocs/docs/CURRENT_STATE.md` for what, if anything, has actually
+been merged.
 
 New work should branch from `main` and return through pull requests.
 
@@ -62,8 +62,8 @@ since it held nothing beyond what `main` already has.
 
 ## Documentation
 
-If a change alters architecture, update `docs/ARCHITECTURE.md`
-or `docs/DECISIONS.md`.
+If a change alters architecture, update `../ChatDocs/docs/ARCHITECTURE.md`
+or `../ChatDocs/docs/DECISIONS.md`.
 
 If a change significantly changes what is currently implemented,
-update `docs/CURRENT_STATE.md`.
+update `../ChatDocs/docs/CURRENT_STATE.md`.

@@ -48,33 +48,6 @@
   gap: 10px;
 }
 
-.languagePicker {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.languagePicker select {
-  min-height: 38px;
-  padding: 0 34px 0 11px;
-  color: #35405a;
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  cursor: pointer;
-  transition:
-    border-color 160ms ease,
-    background-color 160ms ease;
-}
-
-.languagePicker select:hover {
-  background: #ffffff;
-  border-color: #bfc9e8;
-}
-
 .mark,
 .welcomeMark {
   display: grid;
@@ -369,7 +342,6 @@
 }
 
 .starterButton:focus-visible,
-.languagePicker select:focus-visible,
 .sendButton:focus-visible,
 .inputRow textarea:focus-visible {
   outline: 3px solid rgba(49, 86, 211, 0.32);
@@ -415,15 +387,8 @@
     display: none;
   }
 
-  .languagePicker > span,
   .status {
     display: none;
-  }
-
-  .languagePicker select {
-    width: 116px;
-    max-width: 32vw;
-    padding-left: 9px;
   }
 
   .conversation {

@@ -1,16 +1,15 @@
-# ChatJoey
+# Joey LLM
 
 **Live application:** [https://chat-joey.vercel.app/](https://chat-joey.vercel.app/)
 
-ChatJoey is the multilingual web frontend for JoeyLLM. The canonical application consolidates the `Yingzhe_Xu` prototype into `main`, preserves its accessible six-language interface, and connects the browser to the real JoeyLLM service through a server-only Next.js API route.
+Joey LLM's web interface, built by [Southern Cross AI](https://github.com/joeyllm). The canonical application consolidates the `Yingzhe_Xu` prototype into `main` and connects the browser to the real Joey LLM service through a server-only Next.js API route.
 
 ## Current capabilities
 
 - Responsive chat UI for desktop and narrow windows
-- English by default, with French, Chinese, Russian, Spanish, and Japanese switching
 - Accessible labels, semantic HTML, keyboard submission, focus styles, and live status updates
 - Conversation state in the current browser session
-- Real JoeyLLM replies through the server-side `/api/chat` boundary
+- Real Joey LLM replies through the server-side `/api/chat` boundary
 - Explicit local preview mode when backend credentials are absent during development
 - Visible production errors instead of silent mock replies when deployment configuration is missing
 
@@ -20,12 +19,12 @@ Qdrant, embeddings, RAG, authentication, uploads, and persistent conversations a
 
 ```text
 Browser
-  -> Next.js ChatJoey
+  -> Next.js app
   -> POST /api/chat (server-only route)
-  -> JoeyLLM /v1/models and /v1/chat/completions
+  -> Joey LLM /v1/models and /v1/chat/completions
 ```
 
-The browser never receives the JoeyLLM API key. The route reads server-only environment variables, selects a configured or available model, consumes JoeyLLM's SSE response, and returns one JSON assistant message to the UI.
+The browser never receives the Joey LLM API key. The route reads server-only environment variables, selects a configured or available model, consumes Joey LLM's SSE response, and returns one JSON assistant message to the UI.
 
 System-wide architecture, decisions, current state, deployment, and Qdrant/RAG notes live in the sibling [`ChatDocs`](../ChatDocs) repo, not here.
 
@@ -95,12 +94,11 @@ Follow the complete [Vercel deployment guide](../ChatDocs/docs/DEPLOYMENT.md), i
 
 ```text
 app/
-  api/chat/route.ts    Server-only JoeyLLM proxy
+  api/chat/route.ts    Server-only Joey LLM proxy
   globals.css          Global reset and design variables
-  i18n.ts              Six-language translation dictionaries
   layout.tsx           Root metadata and layout
   page.module.css      Component-scoped responsive styles
-  page.tsx             Chat UI, state, API calls, and language switching
+  page.tsx             Chat UI, state, and API calls
 ```
 
 System docs, the Qdrant/RAG introduction, and the API smoke-test script moved to the sibling [`ChatDocs`](../ChatDocs) repo — this repo is app-only.

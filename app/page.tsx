@@ -1,18 +1,12 @@
 "use client";
 
 import {
-  type ChangeEvent,
   type FormEvent,
   type KeyboardEvent,
   useEffect,
   useRef,
   useState,
 } from "react";
-import {
-  languageOptions,
-  type LanguageCode,
-  translations,
-} from "./i18n";
 import styles from "./page.module.css";
 
 type MessageRole = "user" | "assistant";
@@ -34,22 +28,47 @@ type ChatResponse = {
   error?: string;
 };
 
-const defaultLanguage: LanguageCode = "en";
+const copy = {
+  chatAriaLabel: "Joey LLM chat interface",
+  productTagline: "Start every conversation with clarity",
+  status: "Ready",
+  thinkingStatus: "Thinking",
+  liveStatus: "Joey LLM live",
+  previewStatus: "Local preview",
+  errorStatus: "Connection issue",
+  messagesAriaLabel: "Conversation messages",
+  thinkingMessage: "Thinking…",
+  welcomeTitle: "What can we solve together today?",
+  welcomeDescription:
+    "Type a question or choose an example below. It's sent securely to Joey LLM through the server.",
+  examplesAriaLabel: "Example questions",
+  starterPrompts: [
+    "Help me plan today's priorities",
+    "Explain vector search in simple terms",
+    "Create an acceptance checklist for a new feature",
+  ],
+  userRole: "You",
+  assistantRole: "Joey LLM",
+  inputLabel: "Message",
+  placeholder: "Message Joey LLM…",
+  sendButtonLabel: "Send message",
+  send: "Send",
+  hint: "Enter to send · Shift + Enter for a new line",
+  disclaimer:
+    "Joey LLM can make mistakes. Check important information. Qdrant and RAG are not connected yet.",
+  requestFailed:
+    "Could not reach Joey LLM. Please check the connection and try again.",
+  mockReply: (preview: string) =>
+    `Local mock reply: I received “${preview}”. This prototype only demonstrates interface interactions and is not connected to a real model or knowledge base.`,
+};
 
 export default function Home() {
-  const [language, setLanguage] = useState<LanguageCode>(defaultLanguage);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [mode, setMode] = useState<ChatMode>("ready");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const nextMessageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const copy = translations[language];
-
-  useEffect(() => {
-    document.documentElement.lang = language;
-    document.title = copy.documentTitle;
-  }, [copy.documentTitle, language]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -57,10 +76,6 @@ export default function Home() {
       block: "nearest",
     });
   }, [messages]);
-
-  function handleLanguageChange(event: ChangeEvent<HTMLSelectElement>) {
-    setLanguage(event.target.value as LanguageCode);
-  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -150,28 +165,14 @@ export default function Home() {
         <header className={styles.header}>
           <div className={styles.identity}>
             <span className={styles.mark} aria-hidden="true">
-              CJ
+              JL
             </span>
             <div>
-              <p className={styles.productName}>ChatJoey</p>
+              <p className={styles.productName}>Joey LLM</p>
               <p className={styles.productTagline}>{copy.productTagline}</p>
             </div>
           </div>
           <div className={styles.headerActions}>
-            <label className={styles.languagePicker}>
-              <span>{copy.languageLabel}</span>
-              <select
-                aria-label={copy.languageLabel}
-                value={language}
-                onChange={handleLanguageChange}
-              >
-                {languageOptions.map((option) => (
-                  <option key={option.code} value={option.code}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
             <span
               className={`${styles.status} ${
                 mode === "error" ? styles.errorStatus : ""

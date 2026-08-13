@@ -53,14 +53,14 @@ async function getModel(
   });
 
   if (!response.ok) {
-    throw new Error(`JoeyLLM models request failed with ${response.status}`);
+    throw new Error(`Joey LLM models request failed with ${response.status}`);
   }
 
   const payload = (await response.json()) as ModelsResponse;
   const model = payload.data?.[0]?.id;
 
   if (typeof model !== "string" || !model) {
-    throw new Error("JoeyLLM returned no usable model");
+    throw new Error("Joey LLM returned no usable model");
   }
 
   return model;
@@ -68,7 +68,7 @@ async function getModel(
 
 async function readAssistantContent(response: Response) {
   if (!response.body) {
-    throw new Error("JoeyLLM returned an empty stream");
+    throw new Error("Joey LLM returned an empty stream");
   }
 
   const reader = response.body.getReader();
@@ -115,7 +115,7 @@ async function readAssistantContent(response: Response) {
   }
 
   if (!content) {
-    throw new Error("JoeyLLM returned no assistant content");
+    throw new Error("Joey LLM returned no assistant content");
   }
 
   return content;
@@ -166,7 +166,7 @@ export async function POST(request: Request) {
 
   if (!baseUrlValue || !apiKey) {
     return NextResponse.json(
-      { error: "The JoeyLLM service is not configured." },
+      { error: "The Joey LLM service is not configured." },
       { status: 503 },
     );
   }
@@ -194,7 +194,7 @@ export async function POST(request: Request) {
     });
 
     if (!upstream.ok) {
-      throw new Error(`JoeyLLM chat request failed with ${upstream.status}`);
+      throw new Error(`Joey LLM chat request failed with ${upstream.status}`);
     }
 
     const content = await readAssistantContent(upstream);
@@ -206,11 +206,11 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error(
-      "JoeyLLM proxy error:",
+      "Joey LLM proxy error:",
       error instanceof Error ? error.message : "Unknown upstream error",
     );
     return NextResponse.json(
-      { error: "ChatJoey could not reach JoeyLLM. Please try again." },
+      { error: "Could not reach Joey LLM. Please try again." },
       { status: 502 },
     );
   }

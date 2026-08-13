@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ChatJoey | JoeyLLM chat",
-  description: "A multilingual and accessible web interface for JoeyLLM.",
+  title: "Joey LLM",
+  description: "An accessible web interface for Joey LLM.",
 };
 
 export default function RootLayout({

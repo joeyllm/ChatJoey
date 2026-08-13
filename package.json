@@ -1,7 +1,8 @@
 {
-  "name": "chatjoey",
+  "name": "joeyllm",
   "version": "0.1.0",
   "private": true,
+  "author": "Southern Cross AI",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
