@@ -26,7 +26,6 @@ type ChatErrorResponse = {
 
 const copy = {
   chatAriaLabel: "Joey LLM chat interface",
-  productTagline: "Start every conversation with clarity",
   status: "Ready",
   thinkingStatus: "Thinking",
   liveStatus: "Joey LLM live",
@@ -34,17 +33,20 @@ const copy = {
   errorStatus: "Connection issue",
   messagesAriaLabel: "Conversation messages",
   thinkingMessage: "Thinking…",
-  welcomeTitle: "What can we solve together today?",
+  welcomeIntro:
+    "Hi, I’m Baby Joey. I’m new here and still learning what it means to be Australian.",
+  welcomeTitle: "What can little Joey help you with today?",
   welcomeDescription:
-    "Type a question below. It's sent securely to Joey LLM.",
+    "Ask me anything — serious, silly, or somewhere in between. I’m still learning, so feel free to test me.",
   userRole: "You",
   assistantRole: "Joey LLM",
   inputLabel: "Message",
-  placeholder: "Message Joey LLM…",
+  placeholder: "Message Joey…",
   sendButtonLabel: "Send message",
   send: "Send",
   hint: "Enter to send · Shift + Enter for a new line",
-  disclaimer: "Joey LLM can make mistakes. Check important information.",
+  disclaimer:
+    "Baby Joey is still learning and can get things wrong. Please check important information.",
   requestFailed:
     "Could not reach Joey LLM. Please check the connection and try again.",
   mockReply: (preview: string) =>
@@ -180,17 +182,16 @@ export default function Home() {
 
   return (
     <main className={styles.page}>
+      <aside className={styles.sidebar} aria-label="Joey LLM">
+        <div className={styles.identity}>
+          <span className={styles.mark} aria-hidden="true">
+            JL
+          </span>
+          <p className={styles.productName}>Joey LLM</p>
+        </div>
+      </aside>
       <section className={styles.chatShell} aria-label={copy.chatAriaLabel}>
         <header className={styles.header}>
-          <div className={styles.identity}>
-            <span className={styles.mark} aria-hidden="true">
-              JL
-            </span>
-            <div>
-              <p className={styles.productName}>Joey LLM</p>
-              <p className={styles.productTagline}>{copy.productTagline}</p>
-            </div>
-          </div>
           <div className={styles.headerActions}>
             <span
               className={`${styles.status} ${
@@ -212,6 +213,7 @@ export default function Home() {
           {messages.length === 0 ? (
             <div className={styles.welcome}>
               <JoeyMascot />
+              <p className={styles.welcomeIntro}>{copy.welcomeIntro}</p>
               <h1>{copy.welcomeTitle}</h1>
               <p>{copy.welcomeDescription}</p>
             </div>
