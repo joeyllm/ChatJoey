@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import styles from "./page.module.css";
+import JoeyMascot from "./components/JoeyMascot";
 
 type MessageRole = "user" | "assistant";
 
@@ -35,13 +36,7 @@ const copy = {
   thinkingMessage: "Thinking…",
   welcomeTitle: "What can we solve together today?",
   welcomeDescription:
-    "Type a question or choose an example below. It's sent securely to Joey LLM through the server.",
-  examplesAriaLabel: "Example questions",
-  starterPrompts: [
-    "Help me plan today's priorities",
-    "Explain vector search in simple terms",
-    "Create an acceptance checklist for a new feature",
-  ],
+    "Type a question below. It's sent securely to Joey LLM.",
   userRole: "You",
   assistantRole: "Joey LLM",
   inputLabel: "Message",
@@ -49,8 +44,7 @@ const copy = {
   sendButtonLabel: "Send message",
   send: "Send",
   hint: "Enter to send · Shift + Enter for a new line",
-  disclaimer:
-    "Joey LLM can make mistakes. Check important information. Qdrant and RAG are not connected yet.",
+  disclaimer: "Joey LLM can make mistakes. Check important information.",
   requestFailed:
     "Could not reach Joey LLM. Please check the connection and try again.",
   mockReply: (preview: string) =>
@@ -217,27 +211,9 @@ export default function Home() {
         >
           {messages.length === 0 ? (
             <div className={styles.welcome}>
-              <span className={styles.welcomeMark} aria-hidden="true">
-                ✦
-              </span>
+              <JoeyMascot />
               <h1>{copy.welcomeTitle}</h1>
               <p>{copy.welcomeDescription}</p>
-              <div
-                className={styles.starters}
-                aria-label={copy.examplesAriaLabel}
-              >
-                {copy.starterPrompts.map((prompt) => (
-                  <button
-                    className={styles.starterButton}
-                    key={prompt}
-                    onClick={() => setDraft(prompt)}
-                    type="button"
-                  >
-                    {prompt}
-                    <span aria-hidden="true">→</span>
-                  </button>
-                ))}
-              </div>
             </div>
           ) : (
             <ol className={styles.messageList}>

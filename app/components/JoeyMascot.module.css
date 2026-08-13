@@ -1,0 +1,643 @@
+.mascot {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 10px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.contenedor {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+
+  /* Original had an orange circle here.
+     We want Joey sitting directly on the page. */
+  background: transparent;
+
+  margin: 0;
+
+  transform: scale(0.36);
+  transform-origin: top left;
+}
+
+/* MAIN KANGAROO */
+
+.cabeza {
+  position: absolute;
+  display: block;
+  width: 95px;
+  height: 120px;
+
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+  background: #cc9666;
+
+  margin: 112px 251px;
+}
+
+.orejas {
+  position: absolute;
+
+  width: 40px;
+  height: 102px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  margin: 60px 221px;
+
+  transform: rotate(-30deg);
+
+  border: 6px solid #f7bb7b;
+}
+
+.orejas::before {
+  content: "";
+
+  position: absolute;
+
+  width: 40px;
+  height: 102px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  margin: 47px 85px;
+
+  transform: rotate(60deg);
+
+  border: 6px solid #f7bb7b;
+}
+
+/* EYES */
+
+.ojos {
+  position: absolute;
+
+  width: 21px;
+  height: 21px;
+
+  border-radius: 100%;
+
+  background: black;
+
+  margin: 55px 12px;
+
+  animation: baja 3s alternate infinite;
+}
+
+.ojos::before {
+  content: "";
+
+  display: block;
+
+  width: 21px;
+  height: 21px;
+
+  border-radius: 100%;
+
+  background: black;
+
+  margin: 1px 50px;
+}
+
+.iris {
+  position: absolute;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: -21px 5px;
+
+  animation: baja3 3s alternate infinite;
+}
+
+.iris::before {
+  content: "";
+
+  position: absolute;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: 1px 52px;
+}
+
+/* NOSE */
+
+.hocico {
+  position: absolute;
+
+  width: 30px;
+  height: 16px;
+
+  border-radius: 0 0 80px 80px;
+
+  background: #121212;
+
+  margin: 93px 33px;
+}
+
+.hocico::before {
+  content: "";
+
+  display: block;
+
+  width: 0;
+  height: 0;
+
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+  border-bottom: 21px solid black;
+
+  border-radius: 100px / 50px;
+
+  margin: -17px -2px;
+}
+
+/* NECK */
+
+.cuello {
+  position: absolute;
+
+  border-bottom: 50px solid #f7bb7b;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+
+  height: 0;
+  width: 30px;
+
+  margin: 221px 271px;
+}
+
+/* BODY */
+
+.body {
+  position: absolute;
+
+  width: 142px;
+  height: 192px;
+
+  border-radius: 100%;
+
+  background: #f7bb7b;
+
+  margin: 251px 225px;
+}
+
+.body3 {
+  position: absolute;
+
+  width: 125px;
+  height: 99px;
+
+  border-radius: 0 0 142px 142px;
+
+  background: #cc9666;
+
+  margin: 355px 234px;
+
+  z-index: 333;
+}
+
+/* LEGS */
+
+.legs {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 102px;
+  height: 102px;
+
+  background: #f7bb7b;
+
+  border-radius: 50px 50px 0 50px;
+
+  transform: rotate(45deg);
+
+  margin: 350px 201px;
+}
+
+.legs::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 102px;
+  height: 102px;
+
+  background: #f7bb7b;
+
+  border-radius: 50px 50px 0 50px;
+
+  transform: rotate(0deg);
+
+  margin: -60px 63px;
+}
+
+.legs3 {
+  position: absolute;
+
+  width: 50px;
+  height: 90px;
+
+  background: #f7bb7b;
+
+  border-radius: 30px;
+
+  margin: 430px 190px;
+
+  transform: rotate(45deg);
+}
+
+.legs3::before {
+  content: "";
+
+  position: absolute;
+
+  width: 50px;
+  height: 90px;
+
+  background: #f7bb7b;
+
+  border-radius: 30px;
+
+  margin: -112px 112px;
+
+  transform: rotate(-90deg);
+}
+
+/* ARMS */
+
+.legs5 {
+  position: absolute;
+
+  width: 65px;
+  height: 150px;
+
+  border-top: 30px solid #cc9666;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+
+  border-radius: 100px / 100px;
+
+  transform: rotate(-70deg);
+
+  margin: 241px 261px;
+}
+
+.legs5::before {
+  content: "";
+
+  position: absolute;
+
+  width: 65px;
+  height: 150px;
+
+  border-bottom: 30px solid #cc9666;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+
+  border-radius: 100px / 100px;
+
+  transform: rotate(-35deg);
+
+  margin: -85px -45px;
+}
+
+.legs7 {
+  position: absolute;
+
+  width: 33px;
+  height: 21px;
+
+  border-radius: 0 0 50px 50px;
+
+  background: #cc9666;
+
+  margin: 330px 235px;
+}
+
+.legs7::before {
+  content: "";
+
+  position: absolute;
+
+  width: 33px;
+  height: 21px;
+
+  border-radius: 0 0 50px 50px;
+
+  background: #cc9666;
+
+  margin: 1px 87px;
+}
+
+/* TAIL */
+
+.cola {
+  position: absolute;
+
+  width: 102px;
+  height: 172px;
+
+  border-radius: 100%;
+
+  border-left: 30px solid #cc9666;
+
+  margin: 251px 350px;
+
+  transform: rotate(35deg);
+}
+
+/* BABY JOEYS */
+
+.cabeza3 {
+  position: absolute;
+
+  display: block;
+
+  width: 50px;
+  height: 60px;
+
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+  background: #dd9966;
+
+  margin: 300px 121px;
+
+  border: 1px solid #996633;
+}
+
+.orejitas {
+  position: absolute;
+
+  width: 21px;
+  height: 50px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  border: 3px solid #ffd7ae;
+
+  margin: 271px 112px;
+
+  transform: rotate(-21deg);
+}
+
+.orejitas::before {
+  content: "";
+
+  position: absolute;
+
+  width: 21px;
+  height: 50px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  border: 3px solid #ffd7ae;
+
+  margin: 12px 35px;
+
+  transform: rotate(42deg);
+}
+
+/* BABY EYES */
+
+.ojitos {
+  position: absolute;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 100%;
+
+  background: black;
+
+  margin: 25px 5px;
+
+  animation: abre 2s linear infinite;
+}
+
+.ojitos::before {
+  content: "";
+
+  position: absolute;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 100%;
+
+  background: black;
+
+  margin: 0 25px;
+}
+
+.irisitos {
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: 2px 3px;
+}
+
+.irisitos::before {
+  content: "";
+
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: 0 27px;
+}
+
+/* BABY NOSE */
+
+.hocico3 {
+  position: absolute;
+
+  width: 14px;
+  height: 9px;
+
+  border-radius: 0 0 80px 80px;
+
+  background: #121212;
+
+  margin: 45px 19px;
+}
+
+.hocico3::before {
+  content: "";
+
+  display: block;
+
+  width: 0;
+  height: 0;
+
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 12px solid black;
+
+  border-radius: 100px / 50px;
+
+  margin: -9px -2px;
+}
+
+/* BABY POSITION */
+
+.cangurito {
+  position: absolute;
+
+  margin: 83px 125px;
+
+  animation: sube 12s ease-in-out infinite;
+}
+
+.cangurito3 {
+  position: absolute;
+
+  margin: 0 49px;
+}
+
+/* ANIMATIONS */
+
+@keyframes abre {
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes sube {
+  0%,
+  35% {
+    margin: 83px 125px;
+  }
+
+  42% {
+    margin: 0 125px;
+  }
+
+  85% {
+    margin: 0 125px;
+  }
+
+  92%,
+  100% {
+    margin: 83px 125px;
+  }
+}
+
+@keyframes baja {
+  0% {
+    margin: 55px 12px;
+  }
+
+  25% {
+    margin: 55px 12px;
+  }
+
+  50% {
+    margin: 60px 12px;
+  }
+
+  75% {
+    margin: 60px 12px;
+  }
+
+  100% {
+    margin: 60px 12px;
+  }
+}
+
+@keyframes baja3 {
+  0% {
+    margin: -21px 5px;
+  }
+
+  25% {
+    margin: -21px 5px;
+  }
+
+  50% {
+    margin: -12px 5px;
+  }
+
+  75% {
+    margin: -12px 5px;
+  }
+
+  100% {
+    margin: -12px 5px;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .ojos,
+  .iris,
+  .ojitos,
+  .cangurito {
+    animation: none;
+  }
+}
+
+/* SMALL SCREENS */
+
+@media (max-width: 640px) {
+  .mascot {
+    width: 180px;
+    height: 180px;
+  }
+
+  .contenedor {
+    transform: scale(0.29);
+  }
+}
