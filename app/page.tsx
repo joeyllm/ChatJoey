@@ -7,6 +7,8 @@ import {
   useRef,
   useState,
 } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
 import JoeyMascot from "./components/JoeyMascot";
 
@@ -232,7 +234,11 @@ export default function Home() {
                         </span>
                         {copy.assistantRole}
                       </p>
-                      <p className={styles.messageContent}>{message.content}</p>
+                      <div className={`${styles.messageContent} ${styles.markdown}`}>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                   </li>
                 ) : (
