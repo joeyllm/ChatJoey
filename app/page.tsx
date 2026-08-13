@@ -212,8 +212,12 @@ export default function Home() {
         >
           {messages.length === 0 ? (
             <div className={styles.welcome}>
-              <JoeyMascot />
-              <p className={styles.welcomeIntro}>{copy.welcomeIntro}</p>
+              <div className={styles.introRow}>
+                <JoeyMascot />
+                <div className={styles.speechBubble}>
+                  <p>{copy.welcomeIntro}</p>
+                </div>
+              </div>
               <h1>{copy.welcomeTitle}</h1>
               <p>{copy.welcomeDescription}</p>
             </div>

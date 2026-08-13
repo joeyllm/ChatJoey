@@ -134,13 +134,46 @@
   line-height: 1.7;
 }
 
-.welcome > p.welcomeIntro {
-  max-width: 460px;
-  margin: 14px 0 22px;
-  color: var(--accent-deep);
-  font-size: 1.02rem;
-  font-weight: 650;
+.introRow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 22px;
+}
+
+.speechBubble {
+  position: relative;
+  max-width: 250px;
+  margin-top: 46px;
+  margin-left: -16px;
+  padding: 12px 14px;
+  background: #fdf3df;
+  border: 1px solid rgba(199, 155, 76, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 10px 22px rgba(23, 32, 51, 0.12);
+  text-align: left;
+}
+
+.speechBubble p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 400;
   line-height: 1.5;
+}
+
+.speechBubble::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 14px;
+  height: 14px;
+  background: #fdf3df;
+  border: 1px solid rgba(199, 155, 76, 0.35);
+  border-radius: 3px;
+  transform: translateY(-50%) rotate(45deg);
+  box-shadow: -3px 3px 6px rgba(23, 32, 51, 0.06);
 }
 
 .messageList {
@@ -358,6 +391,17 @@
 
   .welcome h1 {
     font-size: 1.8rem;
+  }
+
+  .speechBubble {
+    max-width: 195px;
+    margin-top: 34px;
+    margin-left: -12px;
+    padding: 10px 12px;
+  }
+
+  .speechBubble p {
+    font-size: 0.8rem;
   }
 
   .message {
