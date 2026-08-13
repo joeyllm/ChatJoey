@@ -19,12 +19,7 @@ type Message = {
 
 type ChatMode = "ready" | "thinking" | "live" | "mock" | "error";
 
-type ChatResponse = {
-  mode?: "live" | "mock";
-  message?: {
-    role?: string;
-    content?: string;
-  };
+type ChatErrorResponse = {
   error?: string;
 };
 
@@ -108,32 +103,62 @@ export default function Home() {
           })),
         }),
       });
-      const payload = (await response.json()) as ChatResponse;
 
-      if (
-        !response.ok ||
-        (payload.mode !== "live" && payload.mode !== "mock") ||
-        typeof payload.message?.content !== "string"
-      ) {
-        throw new Error(payload.error ?? "Invalid chat response");
+      if (!response.ok) {
+        const payload = (await response
+          .json()
+          .catch(() => null)) as ChatErrorResponse | null;
+        throw new Error(payload?.error ?? "Invalid chat response");
       }
 
-      const preview =
-        content.length > 72 ? `${content.slice(0, 72)}…` : content;
-      const assistantMessage: Message = {
-        id: nextMessageId.current++,
-        role: "assistant",
-        content:
-          payload.mode === "mock"
-            ? copy.mockReply(preview)
-            : payload.message.content,
-      };
+      const chatMode = response.headers.get("X-Chat-Mode");
+      if (
+        (chatMode !== "live" && chatMode !== "mock") ||
+        !response.body
+      ) {
+        throw new Error("Invalid chat response");
+      }
 
+      const assistantId = nextMessageId.current++;
       setMessages((currentMessages) => [
         ...currentMessages,
-        assistantMessage,
+        { id: assistantId, role: "assistant", content: "" },
       ]);
-      setMode(payload.mode);
+      setMode(chatMode);
+
+      if (chatMode === "mock") {
+        await response.body.cancel();
+        const preview =
+          content.length > 72 ? `${content.slice(0, 72)}…` : content;
+        setMessages((currentMessages) =>
+          currentMessages.map((message) =>
+            message.id === assistantId
+              ? { ...message, content: copy.mockReply(preview) }
+              : message,
+          ),
+        );
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantContent = "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+          break;
+        }
+
+        assistantContent += decoder.decode(value, { stream: true });
+        setMessages((currentMessages) =>
+          currentMessages.map((message) =>
+            message.id === assistantId
+              ? { ...message, content: assistantContent }
+              : message,
+          ),
+        );
+      }
     } catch {
       setErrorMessage(copy.requestFailed);
       setMode("error");

@@ -66,59 +66,65 @@ async function getModel(
   return model;
 }
 
-async function readAssistantContent(response: Response) {
-  if (!response.body) {
+function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
+  if (!upstream.body) {
     throw new Error("Joey LLM returned an empty stream");
   }
 
-  const reader = response.body.getReader();
+  const reader = upstream.body.getReader();
   const decoder = new TextDecoder();
+  const encoder = new TextEncoder();
   let buffer = "";
-  let content = "";
-  let doneReceived = false;
 
-  function consumeLine(line: string) {
+  function extractDelta(line: string): string | null {
     if (!line.startsWith("data: ")) {
-      return;
+      return null;
     }
 
     const data = line.slice(6);
     if (data === "[DONE]") {
-      doneReceived = true;
-      return;
+      return null;
     }
 
     const chunk = JSON.parse(data) as {
       choices?: Array<{ delta?: { content?: unknown } }>;
     };
     const delta = chunk.choices?.[0]?.delta?.content;
-    if (typeof delta === "string") {
-      content += delta;
-    }
+    return typeof delta === "string" ? delta : null;
   }
 
-  while (!doneReceived) {
-    const { value, done } = await reader.read();
-    buffer += decoder.decode(value, { stream: !done });
+  return new ReadableStream<Uint8Array>({
+    async pull(controller) {
+      const { value, done } = await reader.read();
+      buffer += decoder.decode(value, { stream: !done });
 
-    const lines = buffer.split(/\r?\n/);
-    buffer = lines.pop() ?? "";
-    lines.forEach(consumeLine);
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() ?? "";
 
-    if (done) {
-      break;
-    }
-  }
+      for (const line of lines) {
+        const delta = extractDelta(line);
+        if (delta) {
+          controller.enqueue(encoder.encode(delta));
+        }
+      }
 
-  if (buffer) {
-    consumeLine(buffer);
-  }
+      if (done) {
+        controller.close();
+      }
+    },
+    cancel() {
+      reader.cancel();
+    },
+  });
+}
 
-  if (!content) {
-    throw new Error("Joey LLM returned no assistant content");
-  }
-
-  return content;
+function textStream(text: string): ReadableStream<Uint8Array> {
+  return new ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode(text));
+      controller.close();
+    },
+  });
 }
 
 export async function POST(request: Request) {
@@ -155,11 +161,10 @@ export async function POST(request: Request) {
     (localMockRequested || !baseUrlValue || !apiKey);
 
   if (localPreview) {
-    return NextResponse.json({
-      mode: "mock",
-      message: {
-        role: "assistant",
-        content: "Local preview response.",
+    return new Response(textStream("Local preview response."), {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-Chat-Mode": "mock",
       },
     });
   }
@@ -197,12 +202,12 @@ export async function POST(request: Request) {
       throw new Error(`Joey LLM chat request failed with ${upstream.status}`);
     }
 
-    const content = await readAssistantContent(upstream);
-
-    return NextResponse.json({
-      mode: "live",
-      model,
-      message: { role: "assistant", content },
+    return new Response(assistantDeltaStream(upstream), {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-Chat-Mode": "live",
+        "X-Chat-Model": model,
+      },
     });
   } catch (error) {
     console.error(
