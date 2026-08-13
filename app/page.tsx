@@ -38,7 +38,6 @@ const copy = {
   welcomeTitle: "What can little Joey help you with today?",
   welcomeDescription:
     "Ask me anything — serious, silly, or somewhere in between. I’m still learning, so feel free to test me.",
-  userRole: "You",
   assistantRole: "Joey LLM",
   inputLabel: "Message",
   placeholder: "Message Joey…",
@@ -223,31 +222,38 @@ export default function Home() {
             </div>
           ) : (
             <ol className={styles.messageList}>
-              {messages.map((message) => (
-                <li
-                  className={`${styles.messageRow} ${
-                    message.role === "user"
-                      ? styles.userRow
-                      : styles.assistantRow
-                  }`}
-                  key={message.id}
-                >
-                  <article className={styles.message}>
-                    <p className={styles.messageRole}>
-                      {message.role === "user"
-                        ? copy.userRole
-                        : copy.assistantRole}
+              {messages.map((message) =>
+                message.role === "assistant" ? (
+                  <li className={`${styles.messageRow} ${styles.assistantRow}`} key={message.id}>
+                    <div className={styles.assistantMessage}>
+                      <p className={styles.assistantLabel}>
+                        <span className={styles.assistantAvatar} aria-hidden="true">
+                          JL
+                        </span>
+                        {copy.assistantRole}
+                      </p>
+                      <p className={styles.messageContent}>{message.content}</p>
+                    </div>
+                  </li>
+                ) : (
+                  <li className={`${styles.messageRow} ${styles.userRow}`} key={message.id}>
+                    <p className={`${styles.message} ${styles.messageContent}`}>
+                      {message.content}
                     </p>
-                    <p className={styles.messageContent}>{message.content}</p>
-                  </article>
-                </li>
-              ))}
+                  </li>
+                ),
+              )}
               {mode === "thinking" ? (
                 <li className={`${styles.messageRow} ${styles.assistantRow}`}>
-                  <article className={`${styles.message} ${styles.pendingMessage}`}>
-                    <p className={styles.messageRole}>{copy.assistantRole}</p>
+                  <div className={`${styles.assistantMessage} ${styles.pendingMessage}`}>
+                    <p className={styles.assistantLabel}>
+                      <span className={styles.assistantAvatar} aria-hidden="true">
+                        JL
+                      </span>
+                      {copy.assistantRole}
+                    </p>
                     <p className={styles.messageContent}>{copy.thinkingMessage}</p>
-                  </article>
+                  </div>
                 </li>
               ) : null}
             </ol>
