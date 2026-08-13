@@ -1,7 +1,6 @@
 .page {
   min-height: 100vh;
   min-height: 100dvh;
-  padding: 24px;
   background:
     radial-gradient(circle at 15% 0%, rgba(80, 112, 224, 0.12), transparent 32%),
     radial-gradient(circle at 90% 90%, rgba(136, 96, 204, 0.09), transparent 35%),
@@ -9,28 +8,22 @@
 }
 
 .chatShell {
-  width: min(100%, 980px);
-  height: calc(100vh - 48px);
-  height: calc(100dvh - 48px);
-  min-height: 580px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(218, 223, 235, 0.92);
-  border-radius: 24px;
-  box-shadow: 0 22px 70px rgba(37, 48, 83, 0.12);
-  backdrop-filter: blur(18px);
 }
 
 .header {
-  min-height: 78px;
-  padding: 16px 22px;
+  min-height: 64px;
+  padding: 14px clamp(20px, 4vw, 48px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+  background: var(--surface);
   border-bottom: 1px solid var(--line);
 }
 
@@ -107,7 +100,7 @@
 
 .conversation {
   min-height: 0;
-  padding: 30px clamp(18px, 5vw, 64px);
+  padding: 30px clamp(20px, 4vw, 48px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-color: #c6ccda transparent;
@@ -180,7 +173,7 @@
 }
 
 .messageList {
-  width: min(100%, 760px);
+  width: min(100%, 860px);
   margin: 0 auto;
   padding: 0;
   display: flex;
@@ -225,7 +218,7 @@
 }
 
 .errorMessage {
-  width: min(100%, 760px);
+  width: min(100%, 860px);
   margin: 18px auto 0;
   padding: 12px 14px;
   color: #8a2f37;
@@ -256,13 +249,13 @@
 }
 
 .composerArea {
-  padding: 14px clamp(16px, 4vw, 44px) 12px;
-  background: linear-gradient(to top, #ffffff 72%, rgba(255, 255, 255, 0.9));
+  padding: 14px clamp(20px, 4vw, 48px) 18px;
+  background: var(--canvas);
   border-top: 1px solid var(--line);
 }
 
 .composer {
-  width: min(100%, 760px);
+  width: min(100%, 860px);
   margin: 0 auto;
 }
 
@@ -363,20 +356,6 @@
 }
 
 @media (max-width: 640px) {
-  .page {
-    padding: 0;
-  }
-
-  .chatShell {
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    min-height: 500px;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
   .header {
     min-height: 70px;
     padding: 13px 15px;
