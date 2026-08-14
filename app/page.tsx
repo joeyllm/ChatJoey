@@ -70,7 +70,6 @@ const copy = {
   errorStatus: "Connection issue",
   messagesAriaLabel: "Conversation messages",
   thinkingMessage: "Thinking…",
-  welcomeTitle: "What can little Joey help you with today?",
   welcomeDescription:
     "Ask me anything — serious, silly, or somewhere in between. I’m still learning, so feel free to test me.",
   sessionNotice:
@@ -385,7 +384,8 @@ export default function Home() {
                     height={20}
                     aria-hidden="true"
                   />
-                  {candidate.name}
+                  {candidate.switcherLabel ?? candidate.name}
+                  {candidate.id === defaultMode.id ? " (default)" : ""}
                 </button>
               </li>
             ))}
@@ -430,13 +430,22 @@ export default function Home() {
         >
           {messages.length === 0 ? (
             <div className={styles.welcome}>
-              <div className={styles.introRow}>
+              <div
+                className={styles.introRow}
+                style={
+                  currentMode.introOffset
+                    ? {
+                        transform: `translate(${currentMode.introOffset.x}px, ${currentMode.introOffset.y}px)`,
+                      }
+                    : undefined
+                }
+              >
                 <currentMode.mascot />
                 <div className={styles.speechBubble}>
                   <p>{currentMode.welcomeIntro}</p>
                 </div>
               </div>
-              <h1>{copy.welcomeTitle}</h1>
+              <h1>{currentMode.welcomeTitle}</h1>
               <p>{copy.welcomeDescription}</p>
             </div>
           ) : (

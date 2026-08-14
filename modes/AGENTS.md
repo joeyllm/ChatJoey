@@ -43,6 +43,11 @@ actually wants different mascot art or animation, and keep it self-contained
 in your mode's own folder — don't edit another mode's mascot to change
 yours.
 
+If a custom mascot is visually bigger/wider than the default and no longer
+sits well against the heading/composer below it, set `introOffset: {x, y}`
+in `mode.ts` (pixels) rather than touching shared layout — it nudges the
+whole intro group (mascot + speech bubble) together as one unit.
+
 ## Testing a mode
 
 1. `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev` and confirm it looks and

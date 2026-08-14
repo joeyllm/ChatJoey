@@ -15,11 +15,18 @@ const templateMode: JoeyMode = {
   // Shown in the chat label and welcome bubble.
   name: "Template Joey",
 
+  // Optional: shorter/different label for the sidebar switcher button.
+  // Falls back to `name` above if you leave this out.
+  // switcherLabel: "Template",
+
   // Short blurb — will show in a future Joey Modes picker UI.
   description: "One-line description of your mode's personality.",
 
   // Mascot speech-bubble text on the welcome screen.
   welcomeIntro: "Hi, I'm Template Joey. Replace this with your mode's intro.",
+
+  // Welcome screen heading.
+  welcomeTitle: "What can Template Joey help you with today?",
 
   // Footer disclaimer sentence for this mode.
   disclaimer: "Template Joey is still learning and can get things wrong.",
@@ -29,6 +36,11 @@ const templateMode: JoeyMode = {
   theme,
   icon,
   mascot,
+
+  // Optional: nudge the whole welcome intro group (mascot + speech bubble)
+  // by pixels if a custom mascot is visually bigger than the default and
+  // no longer sits well against the heading/composer below it.
+  // introOffset: { x: 0, y: 0 },
 };
 
 export default templateMode;

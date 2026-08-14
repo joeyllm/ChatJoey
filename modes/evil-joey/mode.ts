@@ -10,6 +10,7 @@ const evilJoeyMode: JoeyMode = {
   description: "A cheeky, mischievous Joey who loves a wind-up — fun and light, never mean.",
   welcomeIntro:
     "Oi, it's Evil Joey. I'm not actually evil — just here to stir the pot a little and have some fun.",
+  welcomeTitle: "What can Evil Joey help you with today?",
   disclaimer:
     "Evil Joey is all mischief, no malice — still learning and can get things wrong. Please check important information.",
   prompt,

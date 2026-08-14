@@ -1,0 +1,1007 @@
+.mascot {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 0 auto 70px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.contenedor {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+
+  /* Original had an orange circle here.
+     We want Joey sitting directly on the page. */
+  background: transparent;
+
+  margin: 0;
+
+  transform: scale(0.42);
+  transform-origin: top left;
+}
+
+/* MAIN KANGAROO */
+
+.cabeza {
+  position: absolute;
+  display: block;
+  width: 95px;
+  height: 120px;
+
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+  background: #cc9666;
+
+  margin: 112px 251px;
+}
+
+.orejas {
+  position: absolute;
+
+  width: 40px;
+  height: 102px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  margin: 60px 221px;
+
+  transform: rotate(-30deg);
+
+  border: 6px solid #f7bb7b;
+}
+
+.orejas::before {
+  content: "";
+
+  position: absolute;
+
+  width: 40px;
+  height: 102px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  margin: 47px 85px;
+
+  transform: rotate(60deg);
+
+  border: 6px solid #f7bb7b;
+}
+
+/* EYES */
+
+.ojos {
+  position: absolute;
+
+  width: 21px;
+  height: 21px;
+
+  border-radius: 100%;
+
+  background: #1565c0;
+
+  margin: 55px 12px;
+
+  animation: baja 3s alternate infinite;
+}
+
+.ojos::before {
+  content: "";
+
+  display: block;
+
+  width: 21px;
+  height: 21px;
+
+  border-radius: 100%;
+
+  background: #1565c0;
+
+  margin: 1px 50px;
+}
+
+.iris {
+  position: absolute;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: -21px 5px;
+
+  animation: baja3 3s alternate infinite;
+}
+
+.iris::before {
+  content: "";
+
+  position: absolute;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: 1px 52px;
+}
+
+/* NOSE */
+
+.hocico {
+  position: absolute;
+
+  width: 30px;
+  height: 16px;
+
+  border-radius: 0 0 80px 80px;
+
+  background: #121212;
+
+  margin: 93px 33px;
+}
+
+.hocico::before {
+  content: "";
+
+  display: block;
+
+  width: 0;
+  height: 0;
+
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+  border-bottom: 21px solid black;
+
+  border-radius: 100px / 50px;
+
+  margin: -17px -2px;
+}
+
+/* NECK */
+
+.cuello {
+  position: absolute;
+
+  border-bottom: 50px solid #f7bb7b;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+
+  height: 0;
+  width: 30px;
+
+  margin: 221px 271px;
+}
+
+/* BODY */
+
+.body {
+  position: absolute;
+
+  width: 142px;
+  height: 192px;
+
+  border-radius: 100%;
+
+  background: #f7bb7b;
+
+  margin: 251px 225px;
+}
+
+.body3 {
+  position: absolute;
+
+  width: 125px;
+  height: 99px;
+
+  border-radius: 0 0 142px 142px;
+
+  background: #cc9666;
+
+  margin: 355px 234px;
+
+  z-index: 333;
+}
+
+/* LEGS */
+
+.legs {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 102px;
+  height: 102px;
+
+  background: #f7bb7b;
+
+  border-radius: 50px 50px 0 50px;
+
+  transform: rotate(45deg);
+
+  margin: 350px 201px;
+}
+
+.legs::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 102px;
+  height: 102px;
+
+  background: #f7bb7b;
+
+  border-radius: 50px 50px 0 50px;
+
+  transform: rotate(0deg);
+
+  margin: -60px 63px;
+}
+
+.legs3 {
+  position: absolute;
+
+  width: 50px;
+  height: 90px;
+
+  background: #f7bb7b;
+
+  border-radius: 30px;
+
+  margin: 430px 190px;
+
+  transform: rotate(45deg);
+}
+
+.legs3::before {
+  content: "";
+
+  position: absolute;
+
+  width: 50px;
+  height: 90px;
+
+  background: #f7bb7b;
+
+  border-radius: 30px;
+
+  margin: -112px 112px;
+
+  transform: rotate(-90deg);
+}
+
+/* ARMS */
+
+.legs5 {
+  position: absolute;
+
+  width: 65px;
+  height: 150px;
+
+  border-top: 30px solid #cc9666;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+
+  border-radius: 100px / 100px;
+
+  transform: rotate(-70deg);
+
+  margin: 241px 261px;
+}
+
+.legs5::before {
+  content: "";
+
+  position: absolute;
+
+  width: 65px;
+  height: 150px;
+
+  border-bottom: 30px solid #cc9666;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+
+  border-radius: 100px / 100px;
+
+  transform: rotate(-35deg);
+
+  margin: -85px -45px;
+}
+
+.legs7 {
+  position: absolute;
+
+  width: 33px;
+  height: 21px;
+
+  border-radius: 0 0 50px 50px;
+
+  background: #cc9666;
+
+  margin: 330px 235px;
+}
+
+.legs7::before {
+  content: "";
+
+  position: absolute;
+
+  width: 33px;
+  height: 21px;
+
+  border-radius: 0 0 50px 50px;
+
+  background: #cc9666;
+
+  margin: 1px 87px;
+}
+
+/* TAIL */
+
+.cola {
+  position: absolute;
+
+  width: 102px;
+  height: 172px;
+
+  border-radius: 100%;
+
+  border-left: 30px solid #cc9666;
+
+  margin: 251px 350px;
+
+  transform: rotate(35deg);
+}
+
+/* BABY JOEYS */
+
+.cabeza3 {
+  position: absolute;
+
+  display: block;
+
+  width: 50px;
+  height: 60px;
+
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+  background: #dd9966;
+
+  margin: 300px 121px;
+
+  border: 1px solid #996633;
+}
+
+.orejitas {
+  position: absolute;
+
+  width: 21px;
+  height: 50px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  border: 3px solid #ffd7ae;
+
+  margin: 271px 112px;
+
+  transform: rotate(-21deg);
+}
+
+.orejitas::before {
+  content: "";
+
+  position: absolute;
+
+  width: 21px;
+  height: 50px;
+
+  border-radius: 100%;
+
+  background: #cc9666;
+
+  border: 3px solid #ffd7ae;
+
+  margin: 12px 35px;
+
+  transform: rotate(42deg);
+}
+
+/* BABY EYES */
+
+.ojitos {
+  position: absolute;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 100%;
+
+  background: #1565c0;
+
+  margin: 25px 5px;
+
+  animation: abre 2s linear infinite;
+}
+
+.ojitos::before {
+  content: "";
+
+  position: absolute;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 100%;
+
+  background: #1565c0;
+
+  margin: 0 25px;
+}
+
+.irisitos {
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: 2px 3px;
+}
+
+.irisitos::before {
+  content: "";
+
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 100%;
+
+  background: white;
+
+  margin: 0 27px;
+}
+
+/* BABY NOSE */
+
+.hocico3 {
+  position: absolute;
+
+  width: 14px;
+  height: 9px;
+
+  border-radius: 0 0 80px 80px;
+
+  background: #121212;
+
+  margin: 45px 19px;
+}
+
+.hocico3::before {
+  content: "";
+
+  display: block;
+
+  width: 0;
+  height: 0;
+
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 12px solid black;
+
+  border-radius: 100px / 50px;
+
+  margin: -9px -2px;
+}
+
+/* BABY POSITION */
+
+.cangurito {
+  position: absolute;
+
+  margin: 83px 125px;
+
+  animation: sube 12s ease-in-out infinite;
+}
+
+.cangurito3 {
+  position: absolute;
+
+  margin: 0 49px;
+}
+
+/* ANIMATIONS */
+
+@keyframes abre {
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes sube {
+  0%,
+  35% {
+    margin: 83px 125px;
+  }
+
+  42% {
+    margin: 0 125px;
+  }
+
+  85% {
+    margin: 0 125px;
+  }
+
+  92%,
+  100% {
+    margin: 83px 125px;
+  }
+}
+
+@keyframes baja {
+  0% {
+    margin: 55px 12px;
+  }
+
+  25% {
+    margin: 55px 12px;
+  }
+
+  50% {
+    margin: 60px 12px;
+  }
+
+  75% {
+    margin: 60px 12px;
+  }
+
+  100% {
+    margin: 60px 12px;
+  }
+}
+
+@keyframes baja3 {
+  0% {
+    margin: -21px 5px;
+  }
+
+  25% {
+    margin: -21px 5px;
+  }
+
+  50% {
+    margin: -12px 5px;
+  }
+
+  75% {
+    margin: -12px 5px;
+  }
+
+  100% {
+    margin: -12px 5px;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .ojos,
+  .iris,
+  .ojitos,
+  .cangurito {
+    animation: none;
+  }
+}
+
+/* SMALL SCREENS */
+
+@media (max-width: 640px) {
+  .mascot {
+    width: 210px;
+    height: 210px;
+  }
+
+  .contenedor {
+    transform: scale(0.34);
+  }
+}
+
+/* SYDNEY OPERA HOUSE BACKDROP — sits behind the mascot */
+
+.operaWrap {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 1200px;
+  transform: translateX(-50%) scale(0.54);
+  transform-origin: bottom center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.operaHouse {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  position: relative;
+  height: 635px;
+  overflow-x: visible;
+  overflow-y: hidden;
+  --opera-body-bg: #fffaf5;
+}
+
+.operaBase {
+  border-bottom: 5px solid #be9f83;
+  height: 25px;
+  width: 1200px;
+  background: var(--opera-body-bg);
+  border-radius: 3px;
+  box-shadow: 0px -1px 1px #00000022;
+  position: relative;
+  z-index: 2;
+}
+
+.operaBody {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  filter: drop-shadow(0 -1px #b39f83) drop-shadow(0 -5px var(--opera-body-bg));
+  position: relative;
+  z-index: 1;
+}
+
+.operaBody1 {
+  height: 90px;
+  width: 60px;
+  background: var(--opera-body-bg);
+}
+
+.operaBody3 {
+  height: 110px;
+  width: 60px;
+  background: var(--opera-body-bg);
+}
+
+.operaBody2 {
+  height: 90px;
+  width: 40px;
+  background: var(--opera-body-bg);
+  transform-origin: 0% 100%;
+  transform: scaleX(0.93) perspective(100px) rotateY(-27deg);
+}
+
+.operaBody4 {
+  height: 110px;
+  width: 100px;
+  background: var(--opera-body-bg);
+  transform-origin: 0% 100%;
+  transform: scaleX(1.65) perspective(100px) rotateY(27deg);
+}
+
+.operaBody5 {
+  height: 75px;
+  width: 60px;
+  background: var(--opera-body-bg);
+}
+
+.operaBody6 {
+  height: 75px;
+  width: 60px;
+  background: var(--opera-body-bg);
+  transform-origin: 0% 100%;
+  transform: scaleX(1.4) perspective(100px) rotateY(25deg);
+}
+
+.operaBody7 {
+  height: 60px;
+  width: 540px;
+  background: var(--opera-body-bg);
+}
+
+.operaBody8 {
+  height: 60px;
+  width: 80px;
+  background: var(--opera-body-bg);
+  transform-origin: 0% 100%;
+  transform: scaleX(1.78) perspective(100px) rotateY(35deg);
+}
+
+.operaTop {
+  position: relative;
+  z-index: 0;
+  height: 500px;
+  width: 1000px;
+}
+
+.operaTop1 {
+  border-radius: 50%;
+  width: 210px;
+  aspect-ratio: 3/1.2;
+  background: #d3d3d3;
+  position: absolute;
+  bottom: -50px;
+  left: -20px;
+  z-index: -9;
+}
+
+.operaTop2 {
+  background: gray;
+  position: absolute;
+  width: 50px;
+  aspect-ratio: 1/1;
+  transform: rotate(20deg) skew(-20deg);
+  z-index: -10;
+  bottom: -3px;
+  left: 35px;
+}
+
+.operaTop3 {
+  background: gray;
+  position: absolute;
+  width: 50px;
+  aspect-ratio: 1/1;
+  transform: skewY(20deg);
+  z-index: -10;
+  bottom: 25px;
+  left: 53px;
+}
+
+.operaTop4 {
+  position: absolute;
+  width: 453px;
+  height: 229px;
+  filter: drop-shadow(-1px 2px black);
+  top: 300px;
+  left: -230px;
+  z-index: -8;
+}
+
+.operaTop4::before {
+  content: "";
+  display: block;
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(40% 0, 100% 0, 100% 100%, 75% 100%, 68.5% 70%, 62.5% 50%, 52.5% 25%);
+}
+
+.operaTop5 {
+  position: absolute;
+  width: 384px;
+  height: 305px;
+  top: 320px;
+  left: 130px;
+  z-index: -7;
+}
+
+.operaTop5::before {
+  content: "";
+  display: block;
+  background: #f1f1f1;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(17% 0%, 17% 20%, 18% 30%, 20% 40%, 22% 45%, 40% 80%, 0% 60%, 0% 0%);
+}
+
+.operaTop6 {
+  position: absolute;
+  width: 384px;
+  height: 305px;
+  top: 320px;
+  left: 130px;
+  z-index: -8;
+  border-radius: 50%;
+  background: #faf8f8;
+  clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
+}
+
+.operaTop7 {
+  position: absolute;
+  width: 453px;
+  height: 229px;
+  top: 300px;
+  left: -80px;
+  z-index: -7;
+  transform: scale(1.6) rotate(12deg);
+}
+
+.operaTop7::before {
+  content: "";
+  display: block;
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(40% 0, 90% 0, 79% 100%, 68.5% 70%, 62.5% 50%, 52.5% 25%);
+}
+
+.operaTop8 {
+  z-index: -6;
+  position: absolute;
+  height: 280px;
+  width: 140px;
+  background: #faf8f8;
+  clip-path: polygon(45% 0%, 100% 100%, 0% 100%);
+  top: 280px;
+  left: 260px;
+}
+
+.operaTop9 {
+  position: absolute;
+  width: 453px;
+  height: 229px;
+  top: 225px;
+  left: 60px;
+  z-index: -7;
+  transform: scale(1.2, 1.7) rotate(12deg);
+}
+
+.operaTop9::before {
+  content: "";
+  display: block;
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(40% 0, 100% 0, 100% 100%, 75% 100%, 68.5% 70%, 62.5% 50%, 52.5% 25%);
+}
+
+.operaTop10 {
+  position: absolute;
+  z-index: -11;
+  width: 400px;
+  aspect-ratio: 10/1;
+  background: black;
+  border-radius: 50%;
+  transform: rotate(69deg);
+  top: 303px;
+  left: 130px;
+  border: 10px solid white;
+}
+
+.operaTop11 {
+  position: absolute;
+  z-index: -11;
+  width: 300px;
+  aspect-ratio: 10/1;
+  background: black;
+  border-radius: 50%;
+  transform: rotate(60deg);
+  top: 341px;
+  left: 40px;
+  border: 5px solid white;
+}
+
+.operaTop12 {
+  position: absolute;
+  width: 300px;
+  height: 365px;
+  top: 370px;
+  left: 310px;
+  z-index: -10;
+  transform: scale(-1, 1);
+}
+
+.operaTop12::before {
+  content: "";
+  display: block;
+  background: #ececec;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.operaTop13 {
+  position: absolute;
+  width: 467px;
+  height: 439px;
+  top: 410px;
+  left: 280px;
+  z-index: -12;
+  transform: scale(1, 1);
+}
+
+.operaTop13::before {
+  content: "";
+  display: block;
+  background: #f5f5f5;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.operaTop14 {
+  position: absolute;
+  width: 481px;
+  height: 313px;
+  top: 430px;
+  left: 337px;
+  z-index: -13;
+  background: #ffffff;
+  border-radius: 50% / 90% 90% 7% 7%;
+  transform: rotate(280deg);
+}
+
+.operaTop16 {
+  position: absolute;
+  width: 266px;
+  height: 153px;
+  top: 461px;
+  left: 690px;
+  z-index: -7;
+}
+
+.operaTop16::before {
+  content: "";
+  display: block;
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(40% 0, 100% 0, 100% 100%, 75% 100%, 68.5% 70%, 62.5% 50%, 52.5% 25%);
+}
+
+.operaTop18 {
+  position: absolute;
+  width: 237px;
+  height: 120px;
+  top: 450px;
+  left: 898px;
+  z-index: -7;
+  transform: scale(-1, 1);
+}
+
+.operaTop18::before {
+  content: "";
+  display: block;
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(40% 0, 100% 0, 100% 100%, 75% 100%, 68.5% 70%, 62.5% 50%, 52.5% 25%);
+}
+
+.operaWater {
+  background: dodgerblue;
+  height: 60px;
+  width: 1200px;
+  opacity: 0.85;
+}

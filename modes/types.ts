@@ -19,10 +19,17 @@ export type JoeyMode = {
   id: string;
   /** Persona name — shown in the chat label and welcome bubble. */
   name: string;
+  /**
+   * Label shown in the sidebar Joey Modes switcher, if different from
+   * `name` (e.g. a shorter nickname). Falls back to `name` when unset.
+   */
+  switcherLabel?: string;
   /** Short description — for a future Joey Modes picker UI (unused for now). */
   description: string;
   /** Mascot speech-bubble text shown on the welcome screen. */
   welcomeIntro: string;
+  /** Welcome screen heading, e.g. "What can little Joey help you with today?" */
+  welcomeTitle: string;
   /** Footer disclaimer sentence for this mode. */
   disclaimer: string;
   /**
@@ -47,4 +54,11 @@ export type JoeyMode = {
    * (see modes/template/mascot.tsx) instead of duplicating the markup/CSS.
    */
   mascot: ComponentType;
+  /**
+   * Optional pixel offset for the whole welcome intro group (mascot +
+   * speech bubble), moved together as one unit. Rarely needed — only for a
+   * mode whose mascot is visually larger/wider than the default and needs
+   * repositioning to sit well against the heading/composer below it.
+   */
+  introOffset?: { x: number; y: number };
 };

@@ -6,8 +6,9 @@ Want to give Joey a new personality? Keep reading.
 ## 🎭 What are Joey Modes?
 
 A Joey Mode swaps Joey's personality — prompt, name, colours, icon, mascot.
-No core app editing required. Baby Joey (default) and Evil Joey are the
-first two — switch between them from the sidebar to see it in action.
+No core app editing required. Little Joey (default), Evil Joey, and Sydney
+Joey exist so far — switch between them from the sidebar to see it in
+action.
 
 ## 🚀 Run it locally
 
