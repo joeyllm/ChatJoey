@@ -11,6 +11,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
 import JoeyMascot from "./components/JoeyMascot";
+import JoeyIcon from "./components/JoeyIcon";
 
 type MessageRole = "user" | "assistant";
 
@@ -46,8 +47,10 @@ const copy = {
   sendButtonLabel: "Send message",
   send: "Send",
   hint: "Enter to send · Shift + Enter for a new line",
-  disclaimer:
-    "Built by Southern Cross AI · Baby Joey is still learning and can get things wrong. Please check important information.",
+  disclaimerBuiltBy: "Built by",
+  disclaimerBuilder: "Southern Cross AI",
+  disclaimerRest:
+    "· Baby Joey is still learning and can get things wrong. Please check important information.",
   requestFailed:
     "Could not reach Joey LLM. Please check the connection and try again.",
   mockReply: (preview: string) =>
@@ -185,9 +188,7 @@ export default function Home() {
     <main className={styles.page}>
       <aside className={styles.sidebar} aria-label="Joey LLM">
         <div className={styles.identity}>
-          <span className={styles.mark} aria-hidden="true">
-            JL
-          </span>
+          <JoeyIcon className={styles.mark} width={42} height={42} aria-hidden="true" />
           <p className={styles.productName}>Joey LLM</p>
         </div>
       </aside>
@@ -229,9 +230,12 @@ export default function Home() {
                   <li className={`${styles.messageRow} ${styles.assistantRow}`} key={message.id}>
                     <div className={styles.assistantMessage}>
                       <p className={styles.assistantLabel}>
-                        <span className={styles.assistantAvatar} aria-hidden="true">
-                          JL
-                        </span>
+                        <JoeyIcon
+                          className={styles.assistantAvatar}
+                          width={25}
+                          height={25}
+                          aria-hidden="true"
+                        />
                         {copy.assistantRole}
                       </p>
                       <div className={`${styles.messageContent} ${styles.markdown}`}>
@@ -303,7 +307,18 @@ export default function Home() {
             </div>
             <p className={styles.hint}>{copy.hint}</p>
           </form>
-          <p className={styles.disclaimer}>{copy.disclaimer}</p>
+          <p className={styles.disclaimer}>
+            {copy.disclaimerBuiltBy}{" "}
+            <a
+              className={styles.disclaimerLink}
+              href="https://southerncross.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {copy.disclaimerBuilder}
+            </a>{" "}
+            {copy.disclaimerRest}
+          </p>
         </footer>
       </section>
     </main>

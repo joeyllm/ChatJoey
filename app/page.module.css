@@ -55,18 +55,9 @@
 }
 
 .mark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
   flex: 0 0 auto;
-  color: #ffffff;
-  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+  border-radius: 50%;
   box-shadow: 0 8px 18px rgba(74, 122, 94, 0.25);
-  border-radius: 13px;
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
 }
 
 .productName,
@@ -222,17 +213,8 @@
 }
 
 .assistantAvatar {
-  display: grid;
-  place-items: center;
-  width: 25px;
-  height: 25px;
   flex: 0 0 auto;
-  color: #ffffff;
-  background: linear-gradient(145deg, var(--accent), var(--accent-deep));
-  border-radius: 7px;
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  border-radius: 50%;
 }
 
 .pendingMessage .messageContent {
@@ -429,6 +411,20 @@
   color: #8d94a3;
   font-size: 0.68rem;
   text-align: center;
+}
+
+.disclaimerLink {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(141, 148, 163, 0.5);
+  text-underline-offset: 2px;
+}
+
+.disclaimerLink:hover,
+.disclaimerLink:focus-visible {
+  color: var(--accent-deep);
+  text-decoration-color: currentColor;
 }
 
 @media (max-width: 640px) {
