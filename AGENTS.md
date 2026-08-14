@@ -1,69 +1,39 @@
 # Joey LLM Agent Instructions
 
-This repo is the web frontend for Joey LLM.
-
-Joey LLM model serving, Kubernetes infrastructure, GPUs, inference,
-and backend services live in a separate project and are not part
-of this repository.
+Web frontend for Joey LLM. Model serving, Kubernetes, GPUs, inference, and
+backend services live in a separate project — not in scope here.
 
 ## Architecture
 
-Browser
-  ↓
-Next.js app
-  ↓
-/api/chat
-  ↓
-Joey LLM API
+```
+Browser → Next.js app → /api/chat → Joey LLM API
+```
 
-Future RAG functionality may use Qdrant through an appropriate
-server-side API boundary. See `../ChatDocs/docs/ARCHITECTURE.md` for detail.
+## Current focus: Joey Modes framework
 
-## Student Scope
+Building a pluggable system so contributors can add a new Joey personality
+(prompt, name, theme, icon) as a small folder + PR, without touching core
+app code (`page.tsx`, `/api/chat`, etc). Not yet implemented — see
+`README.md` for the target contributor workflow. Design the mode config
+schema and discovery mechanism before writing the first mode, so it isn't a
+one-off hack that has to be rewritten later.
 
-Students primarily work on:
+## Scope
 
-- Chat interface
-- Conversation UI
-- Accessibility
-- Source/citation presentation
-- File upload UI
-- Frontend integration with the Joey LLM API
+Work on: chat interface, conversation UI, accessibility, and the Joey Modes
+framework itself. Do not add model-serving or Kubernetes infrastructure
+here.
 
-Do not add model-serving or Kubernetes infrastructure here.
+## Project state
 
-## Before Making Changes
+`main` is canonical. Branch from `main`, return via pull request.
 
-Read (in the sibling `ChatDocs` repo):
+No API keys are handed out for local testing against the real model —
+`.env.local` absent means demo/mock mode. A merged/reviewed PR gets deployed
+to `beta` (`beta.joeyllm.ai`) for testing against the real Joey LLM model.
 
-- `../ChatDocs/docs/ARCHITECTURE.md`
-- `../ChatDocs/docs/DECISIONS.md`
-- `../ChatDocs/docs/CURRENT_STATE.md`
+## Docs
 
-## Project State
-
-`main` is the canonical implementation.
-
-Do not treat old student prototype branches as current architecture.
-Several early solo prototype branches (2026-08-03) explored the same
-brief independently before any consolidation into `main` — see
-`../ChatDocs/docs/CURRENT_STATE.md` for what, if anything, has actually
-been merged.
-
-New work should branch from `main` and return through pull requests.
-
-## History
-
-The current implementation was consolidated from the Yingzhe_Xu
-prototype branch by an AI coding agent (Codex), merged as PR #4 on
-2026-08-10. That work is now fully represented in `main`; the
-`codex/consolidate-yingzhe-xu` branch was deleted after the merge
-since it held nothing beyond what `main` already has.
-
-## Documentation
-
-If a change alters architecture, update `../ChatDocs/docs/ARCHITECTURE.md`
-or `../ChatDocs/docs/DECISIONS.md`.
-
-If a change significantly changes what is currently implemented,
-update `../ChatDocs/docs/CURRENT_STATE.md`.
+The sibling `ChatDocs` repo has deeper architecture/decisions/state notes,
+but it's due for a cleanup pass and isn't being actively maintained right
+now — treat it as background reference, not a required read.
