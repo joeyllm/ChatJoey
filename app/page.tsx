@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen, Plus } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
@@ -55,6 +55,10 @@ const copy = {
   welcomeDescription:
     "Ask me anything — serious, silly, or somewhere in between. I’m still learning, so feel free to test me.",
   assistantRole: "Joey LLM",
+  sessionNotice:
+    "Joey’s memory is temporary for now. Refreshing or starting over will clear this chat.",
+  newChat: "New Chat",
+  joeyModesHeading: "Joey Modes",
   inputLabel: "Message",
   placeholder: "Message Joey…",
   sendButtonLabel: "Send message",
@@ -103,6 +107,14 @@ export default function Home() {
 
   function toggleSidebarCollapsed() {
     setSidebarCollapsed((collapsed) => !collapsed);
+  }
+
+  function handleNewChat() {
+    setMessages([]);
+    setMode("ready");
+    setErrorMessage(null);
+    setDraft("");
+    nextMessageId.current = 1;
   }
 
   function handleSidebarResizePointerDown(
@@ -299,6 +311,22 @@ export default function Home() {
             <JoeyWordmark className={styles.productName} width={81} height={24} />
           )}
         </div>
+        {sidebarCollapsed ? null : (
+          <p className={styles.sessionNotice}>{copy.sessionNotice}</p>
+        )}
+        {sidebarCollapsed ? null : (
+          <button
+            type="button"
+            className={styles.newChatButton}
+            onClick={handleNewChat}
+          >
+            <Plus size={16} aria-hidden="true" />
+            {copy.newChat}
+          </button>
+        )}
+        {sidebarCollapsed ? null : (
+          <p className={styles.sectionLabel}>{copy.joeyModesHeading}</p>
+        )}
         {sidebarCollapsed ? null : (
           <div
             className={styles.sidebarResizeHandle}
