@@ -1,0 +1,42 @@
+# Joey Modes — rules for every mode
+
+A Joey Mode is a personality swap (prompt, name, theme colours, icon), not a
+fork of the app. If you're building or reviewing a mode, these rules apply.
+
+## Where you work
+
+Contributing a mode means working inside `modes/<your-mode>/` only. You
+should not need to open `app/page.tsx`, `app/api/`, `app/globals.css`, or
+any other shared app code to build a mode. If a mode idea seems to require
+that, stop and raise it — it's a framework change, not a mode.
+
+## `prompt.ts` is additive
+
+A mode's prompt adds instructions on top of Joey's normal behaviour
+(personality, tone, mode-specific rules). It does not replace Joey's real
+backend system prompt, and it should not attempt to override safety or
+backend behaviour — that's out of scope for a mode.
+
+## `theme.ts` has limited control
+
+Only the fields on `JoeyTheme` (see `types.ts`) can be set: `accent`,
+`accentDeep`, `background`, `userMessage`, `speechBubble`, `sidebarTint`.
+No arbitrary CSS, no layout or spacing changes, no component overrides.
+Leave a field unset to keep Joey's normal default — don't restate the
+default value just to "be explicit."
+
+## Testing a mode
+
+1. `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev` and confirm it looks and
+   behaves as intended (demo/mock replies are fine for this — see the root
+   README for how demo mode works).
+2. `npx tsc --noEmit` should be clean.
+
+## Submitting a mode
+
+Open a pull request. We don't hand out API keys — once reviewed, we deploy
+approved modes to `beta` (`beta.joeyllm.ai`) to test against the real Joey
+LLM model before merging.
+
+See also: `template/AGENTS.md` (starting a new mode) and `baby-joey/AGENTS.md`
+(the default mode).

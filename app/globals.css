@@ -8,6 +8,16 @@
   --accent: #4a7a5e;
   --accent-deep: #35604a;
   --focus: #8fbfa3;
+  --chat-background: linear-gradient(
+    180deg,
+    #b9d9f0 0%,
+    #dcecf4 45%,
+    #eee4d3 85%,
+    #ecdec0 100%
+  );
+  --user-message-bg: rgba(74, 122, 94, 0.1);
+  --speech-bubble-bg: #fdf3df;
+  --sidebar-tint: var(--surface);
 }
 
 * {

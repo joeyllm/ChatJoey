@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type CSSProperties,
   type FormEvent,
   type KeyboardEvent,
   type PointerEvent as ReactPointerEvent,
@@ -13,8 +14,9 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
 import JoeyMascot from "./components/JoeyMascot";
-import JoeyIcon from "./components/JoeyIcon";
 import JoeyWordmark from "./components/JoeyWordmark";
+import { activeMode } from "@/modes";
+import type { JoeyTheme } from "@/modes/types";
 
 type MessageRole = "user" | "assistant";
 
@@ -40,6 +42,26 @@ function clampSidebarWidth(width: number) {
   return Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, width));
 }
 
+const THEME_CSS_VARS: Record<keyof JoeyTheme, string> = {
+  accent: "--accent",
+  accentDeep: "--accent-deep",
+  background: "--chat-background",
+  userMessage: "--user-message-bg",
+  speechBubble: "--speech-bubble-bg",
+  sidebarTint: "--sidebar-tint",
+};
+
+function themeStyle(theme: JoeyTheme): CSSProperties {
+  const style: Record<string, string> = {};
+  for (const [key, cssVar] of Object.entries(THEME_CSS_VARS)) {
+    const value = theme[key as keyof JoeyTheme];
+    if (value) {
+      style[cssVar] = value;
+    }
+  }
+  return style as CSSProperties;
+}
+
 const copy = {
   chatAriaLabel: "Joey LLM chat interface",
   status: "Ready",
@@ -49,12 +71,9 @@ const copy = {
   errorStatus: "Connection issue",
   messagesAriaLabel: "Conversation messages",
   thinkingMessage: "Thinking…",
-  welcomeIntro:
-    "Hi, I’m Baby Joey. I’m new here and still learning what it means to be Australian.",
   welcomeTitle: "What can little Joey help you with today?",
   welcomeDescription:
     "Ask me anything — serious, silly, or somewhere in between. I’m still learning, so feel free to test me.",
-  assistantRole: "Joey LLM",
   sessionNotice:
     "Joey’s memory is temporary for now. Refreshing or starting over will clear this chat.",
   newChat: "New Chat",
@@ -66,8 +85,6 @@ const copy = {
   hint: "Enter to send · Shift + Enter for a new line",
   disclaimerBuiltBy: "Built by",
   disclaimerBuilder: "Southern Cross AI",
-  disclaimerRest:
-    "· Baby Joey is still learning and can get things wrong. Please check important information.",
   requestFailed:
     "Could not reach Joey LLM. Please check the connection and try again.",
   mockReply: (preview: string) =>
@@ -180,10 +197,13 @@ export default function Home() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: requestMessages.map(({ role, content: messageContent }) => ({
-            role,
-            content: messageContent,
-          })),
+          messages: [
+            { role: "system", content: activeMode.prompt },
+            ...requestMessages.map(({ role, content: messageContent }) => ({
+              role,
+              content: messageContent,
+            })),
+          ],
         }),
       });
 
@@ -268,7 +288,7 @@ export default function Home() {
   }[mode];
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={themeStyle(activeMode.theme)}>
       <aside
         ref={sidebarRef}
         className={`${styles.sidebar} ${
@@ -301,7 +321,7 @@ export default function Home() {
             sidebarCollapsed ? styles.identityCollapsed : ""
           }`}
         >
-          <JoeyIcon
+          <activeMode.icon
             className={styles.mark}
             width={sidebarCollapsed ? 34 : 42}
             height={sidebarCollapsed ? 34 : 42}
@@ -369,7 +389,7 @@ export default function Home() {
               <div className={styles.introRow}>
                 <JoeyMascot />
                 <div className={styles.speechBubble}>
-                  <p>{copy.welcomeIntro}</p>
+                  <p>{activeMode.welcomeIntro}</p>
                 </div>
               </div>
               <h1>{copy.welcomeTitle}</h1>
@@ -382,13 +402,13 @@ export default function Home() {
                   <li className={`${styles.messageRow} ${styles.assistantRow}`} key={message.id}>
                     <div className={styles.assistantMessage}>
                       <p className={styles.assistantLabel}>
-                        <JoeyIcon
+                        <activeMode.icon
                           className={styles.assistantAvatar}
                           width={25}
                           height={25}
                           aria-hidden="true"
                         />
-                        {copy.assistantRole}
+                        {activeMode.name}
                       </p>
                       <div className={`${styles.messageContent} ${styles.markdown}`}>
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -409,10 +429,13 @@ export default function Home() {
                 <li className={`${styles.messageRow} ${styles.assistantRow}`}>
                   <div className={`${styles.assistantMessage} ${styles.pendingMessage}`}>
                     <p className={styles.assistantLabel}>
-                      <span className={styles.assistantAvatar} aria-hidden="true">
-                        JL
-                      </span>
-                      {copy.assistantRole}
+                      <activeMode.icon
+                        className={styles.assistantAvatar}
+                        width={25}
+                        height={25}
+                        aria-hidden="true"
+                      />
+                      {activeMode.name}
                     </p>
                     <p className={styles.messageContent}>{copy.thinkingMessage}</p>
                   </div>
@@ -469,7 +492,7 @@ export default function Home() {
             >
               {copy.disclaimerBuilder}
             </a>{" "}
-            {copy.disclaimerRest}
+            · {activeMode.disclaimer}
           </p>
         </footer>
       </section>
