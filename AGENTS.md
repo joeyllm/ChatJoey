@@ -11,12 +11,16 @@ Browser → Next.js app → /api/chat → Joey LLM API
 
 ## Current focus: Joey Modes framework
 
-Building a pluggable system so contributors can add a new Joey personality
-(prompt, name, theme, icon) as a small folder + PR, without touching core
-app code (`page.tsx`, `/api/chat`, etc). Not yet implemented — see
-`README.md` for the target contributor workflow. Design the mode config
-schema and discovery mechanism before writing the first mode, so it isn't a
-one-off hack that has to be rewritten later.
+A pluggable system so contributors can add a new Joey personality (prompt,
+name, theme, icon, mascot) as a small folder under `modes/` + PR, without
+touching core app code (`app/page.tsx`, `app/api/`, etc). Implemented — see
+`modes/AGENTS.md` for the rules, `modes/template/` to start a new mode, and
+`README.md` for the contributor workflow. Baby Joey and Evil Joey exist as
+working modes; the sidebar has a live switcher between registered modes.
+
+Mode prompts are delivered as a primed user+assistant turn pair, not a
+`role: "system"` message — see the comment on `prompt` in `modes/types.ts`
+for why.
 
 ## Scope
 

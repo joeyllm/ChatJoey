@@ -7,6 +7,54 @@
   pointer-events: none;
 }
 
+/* MISCHIEF FIRE — flames rising from beneath Evil Joey */
+
+.fire {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18em;
+  height: 8em;
+  font-size: 10px;
+  filter: blur(0.03em);
+}
+
+.particle {
+  position: absolute;
+  bottom: 0;
+  width: 1.6em;
+  height: 1.6em;
+  background-image: radial-gradient(
+    rgba(255, 120, 30, 0.9) 20%,
+    rgba(255, 80, 0, 0) 70%
+  );
+  border-radius: 50%;
+  opacity: 0;
+  animation: joeyFireRise 1.6s ease-in infinite;
+}
+
+@keyframes joeyFireRise {
+  from {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6em) scale(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
 .contenedor {
   position: absolute;
   width: 600px;
@@ -83,7 +131,7 @@
 
   border-radius: 100%;
 
-  background: black;
+  background: #e74c3c;
 
   margin: 55px 12px;
 
@@ -100,7 +148,7 @@
 
   border-radius: 100%;
 
-  background: black;
+  background: #e74c3c;
 
   margin: 1px 50px;
 }
@@ -432,7 +480,7 @@
 
   border-radius: 100%;
 
-  background: black;
+  background: #e74c3c;
 
   margin: 25px 5px;
 
@@ -449,7 +497,7 @@
 
   border-radius: 100%;
 
-  background: black;
+  background: #e74c3c;
 
   margin: 0 25px;
 }

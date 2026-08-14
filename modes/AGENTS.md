@@ -18,6 +18,13 @@ A mode's prompt adds instructions on top of Joey's normal behaviour
 backend system prompt, and it should not attempt to override safety or
 backend behaviour — that's out of scope for a mode.
 
+It's delivered as a primed user+assistant turn pair ahead of the real
+conversation, not a `role: "system"` message (see `app/page.tsx`,
+`handleSubmit`) — the current model doesn't reliably follow persona
+instructions given via system role, and this also means the mode prompt
+can never collide with whatever internal system prompt the backend already
+applies.
+
 ## `theme.ts` has limited control
 
 Only the fields on `JoeyTheme` (see `types.ts`) can be set: `accent`,

@@ -5,11 +5,9 @@ Want to give Joey a new personality? Keep reading.
 
 ## 🎭 What are Joey Modes?
 
-A Joey Mode swaps Joey's personality — prompt, name, colours, icon. No core
-app editing required.
-
-> 🚧 The Joey Mode system is still being built. This README describes the
-> workflow we're building toward.
+A Joey Mode swaps Joey's personality — prompt, name, colours, icon, mascot.
+No core app editing required. Baby Joey (default) and Evil Joey are the
+first two — switch between them from the sidebar to see it in action.
 
 ## 🚀 Run it locally
 
@@ -41,12 +39,14 @@ No API key needed.
 ## 🛠️ Create a Joey Mode
 
 1. Copy the mode template, rename it
-2. Edit the prompt, colours, icon
-3. Done — no app code touched
+2. Edit the prompt, colours, icon (mascot is optional — most modes reuse
+   the default)
+3. Register it, done — no app code touched
 
 ## 👀 Test it
 
-Build and test your mode locally first.
+Run locally and pick your mode from the "Joey Modes" list in the sidebar —
+no environment variables needed once it's registered.
 
 Once your pull request is ready, we can deploy it to beta so you can see how
 it behaves with the real Joey model.

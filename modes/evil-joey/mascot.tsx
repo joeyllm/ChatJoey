@@ -1,8 +1,25 @@
 import styles from "./mascot.module.css";
 
+const FIRE_PARTICLE_COUNT = 30;
+// Deterministic pseudo-random spread (not Math.random) so server and
+// client render the same delays — avoids a hydration mismatch.
+const FIRE_PARTICLES = Array.from({ length: FIRE_PARTICLE_COUNT }, (_, i) => ({
+  left: `${(i / FIRE_PARTICLE_COUNT) * 100}%`,
+  delay: `${((i * 37) % 100) / 100}s`,
+}));
+
 export default function EvilJoeyMascot() {
   return (
     <div className={styles.mascot} aria-hidden="true">
+      <div className={styles.fire}>
+        {FIRE_PARTICLES.map((particle, index) => (
+          <span
+            key={index}
+            className={styles.particle}
+            style={{ left: particle.left, animationDelay: particle.delay }}
+          ></span>
+        ))}
+      </div>
       <div className={styles.contenedor}>
         <div className={styles.canguro}>
           <div className={styles.cuello}></div>

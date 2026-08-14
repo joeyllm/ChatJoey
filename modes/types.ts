@@ -29,6 +29,12 @@ export type JoeyMode = {
    * Additional instructions layered on top of Joey's normal behaviour —
    * personality, tone, mode-specific rules. Not a replacement for Joey's
    * real backend system prompt. Imported from this mode's prompt.ts.
+   *
+   * Delivered as a primed user+assistant turn pair ahead of the real
+   * conversation, not a "system" role message — the current model doesn't
+   * reliably follow persona instructions given via system role, and this
+   * also avoids the message ever colliding with whatever internal system
+   * prompt the backend already applies. See app/page.tsx's handleSubmit.
    */
   prompt: string;
   /** Imported from this mode's theme.ts. */

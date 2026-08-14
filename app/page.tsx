@@ -208,8 +208,17 @@ export default function Home() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // Primed as ordinary conversation turns, not a "system" message —
+          // this model doesn't reliably follow persona instructions given
+          // via the system role, and using it would also risk colliding
+          // with whatever internal system prompt the backend already
+          // applies. See modes/AGENTS.md ("prompt.ts is additive").
           messages: [
-            { role: "system", content: currentMode.prompt },
+            { role: "user", content: currentMode.prompt },
+            {
+              role: "assistant",
+              content: "Got it — staying in character from here on.",
+            },
             ...requestMessages.map(({ role, content: messageContent }) => ({
               role,
               content: messageContent,
