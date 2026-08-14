@@ -3,10 +3,12 @@
 import {
   type FormEvent,
   type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
   useEffect,
   useRef,
   useState,
 } from "react";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
@@ -27,6 +29,16 @@ type ChatMode = "ready" | "thinking" | "live" | "mock" | "error";
 type ChatErrorResponse = {
   error?: string;
 };
+
+const SIDEBAR_MIN_WIDTH = 200;
+const SIDEBAR_MAX_WIDTH = 380;
+const SIDEBAR_DEFAULT_WIDTH = 240;
+const SIDEBAR_COLLAPSED_WIDTH = 72;
+const SIDEBAR_RESIZE_STEP = 16;
+
+function clampSidebarWidth(width: number) {
+  return Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, width));
+}
 
 const copy = {
   chatAriaLabel: "Joey LLM chat interface",
@@ -63,8 +75,13 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [mode, setMode] = useState<ChatMode>("ready");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [sidebarWidth, setSidebarWidth] = useState<number | null>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isResizingSidebar, setIsResizingSidebar] = useState(false);
   const nextMessageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const isDraggingSidebarRef = useRef(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -72,6 +89,59 @@ export default function Home() {
       block: "nearest",
     });
   }, [messages]);
+
+  useEffect(() => {
+    if (!isResizingSidebar) {
+      return;
+    }
+    const previousUserSelect = document.body.style.userSelect;
+    document.body.style.userSelect = "none";
+    return () => {
+      document.body.style.userSelect = previousUserSelect;
+    };
+  }, [isResizingSidebar]);
+
+  function toggleSidebarCollapsed() {
+    setSidebarCollapsed((collapsed) => !collapsed);
+  }
+
+  function handleSidebarResizePointerDown(
+    event: ReactPointerEvent<HTMLDivElement>,
+  ) {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    isDraggingSidebarRef.current = true;
+    setIsResizingSidebar(true);
+  }
+
+  function handleSidebarResizePointerMove(
+    event: ReactPointerEvent<HTMLDivElement>,
+  ) {
+    if (!isDraggingSidebarRef.current || !sidebarRef.current) {
+      return;
+    }
+    const { left } = sidebarRef.current.getBoundingClientRect();
+    setSidebarWidth(clampSidebarWidth(event.clientX - left));
+  }
+
+  function handleSidebarResizePointerUp(
+    event: ReactPointerEvent<HTMLDivElement>,
+  ) {
+    isDraggingSidebarRef.current = false;
+    event.currentTarget.releasePointerCapture(event.pointerId);
+    setIsResizingSidebar(false);
+  }
+
+  function handleSidebarResizeKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const current = sidebarWidth ?? SIDEBAR_DEFAULT_WIDTH;
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      setSidebarWidth(clampSidebarWidth(current - SIDEBAR_RESIZE_STEP));
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      setSidebarWidth(clampSidebarWidth(current + SIDEBAR_RESIZE_STEP));
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -187,11 +257,64 @@ export default function Home() {
 
   return (
     <main className={styles.page}>
-      <aside className={styles.sidebar} aria-label="Joey LLM">
-        <div className={styles.identity}>
-          <JoeyIcon className={styles.mark} width={42} height={42} aria-hidden="true" />
-          <JoeyWordmark className={styles.productName} width={81} height={24} />
+      <aside
+        ref={sidebarRef}
+        className={`${styles.sidebar} ${
+          isResizingSidebar ? styles.sidebarNoTransition : ""
+        } ${sidebarCollapsed ? styles.sidebarCollapsed : ""}`}
+        aria-label="Joey LLM"
+        style={
+          sidebarCollapsed
+            ? { width: SIDEBAR_COLLAPSED_WIDTH, flexBasis: SIDEBAR_COLLAPSED_WIDTH }
+            : sidebarWidth !== null
+              ? { width: sidebarWidth, flexBasis: sidebarWidth }
+              : undefined
+        }
+      >
+        <button
+          type="button"
+          className={styles.sidebarToggle}
+          onClick={toggleSidebarCollapsed}
+          aria-expanded={!sidebarCollapsed}
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {sidebarCollapsed ? (
+            <PanelLeftOpen size={24} aria-hidden="true" />
+          ) : (
+            <PanelLeftClose size={24} aria-hidden="true" />
+          )}
+        </button>
+        <div
+          className={`${styles.identity} ${
+            sidebarCollapsed ? styles.identityCollapsed : ""
+          }`}
+        >
+          <JoeyIcon
+            className={styles.mark}
+            width={sidebarCollapsed ? 34 : 42}
+            height={sidebarCollapsed ? 34 : 42}
+            aria-hidden="true"
+          />
+          {sidebarCollapsed ? null : (
+            <JoeyWordmark className={styles.productName} width={81} height={24} />
+          )}
         </div>
+        {sidebarCollapsed ? null : (
+          <div
+            className={styles.sidebarResizeHandle}
+            role="separator"
+            aria-orientation="vertical"
+            aria-label="Resize sidebar width"
+            aria-valuenow={sidebarWidth ?? SIDEBAR_DEFAULT_WIDTH}
+            aria-valuemin={SIDEBAR_MIN_WIDTH}
+            aria-valuemax={SIDEBAR_MAX_WIDTH}
+            tabIndex={0}
+            onPointerDown={handleSidebarResizePointerDown}
+            onPointerMove={handleSidebarResizePointerMove}
+            onPointerUp={handleSidebarResizePointerUp}
+            onKeyDown={handleSidebarResizeKeyDown}
+          />
+        )}
       </aside>
       <section className={styles.chatShell} aria-label={copy.chatAriaLabel}>
         <header className={styles.header}>
