@@ -15,7 +15,7 @@ import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
 import JoeyMascot from "./components/JoeyMascot";
 import JoeyWordmark from "./components/JoeyWordmark";
-import { activeMode } from "@/modes";
+import { activeMode as defaultMode, modes } from "@/modes";
 import type { JoeyTheme } from "@/modes/types";
 
 type MessageRole = "user" | "assistant";
@@ -99,10 +99,14 @@ export default function Home() {
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isResizingSidebar, setIsResizingSidebar] = useState(false);
+  const [selectedModeId, setSelectedModeId] = useState(defaultMode.id);
   const nextMessageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
   const isDraggingSidebarRef = useRef(false);
+
+  const currentMode =
+    modes.find((candidate) => candidate.id === selectedModeId) ?? defaultMode;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -132,6 +136,14 @@ export default function Home() {
     setErrorMessage(null);
     setDraft("");
     nextMessageId.current = 1;
+  }
+
+  function handleSelectMode(modeId: string) {
+    if (modeId === selectedModeId) {
+      return;
+    }
+    setSelectedModeId(modeId);
+    handleNewChat();
   }
 
   function handleSidebarResizePointerDown(
@@ -198,7 +210,7 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [
-            { role: "system", content: activeMode.prompt },
+            { role: "system", content: currentMode.prompt },
             ...requestMessages.map(({ role, content: messageContent }) => ({
               role,
               content: messageContent,
@@ -288,7 +300,7 @@ export default function Home() {
   }[mode];
 
   return (
-    <main className={styles.page} style={themeStyle(activeMode.theme)}>
+    <main className={styles.page} style={themeStyle(currentMode.theme)}>
       <aside
         ref={sidebarRef}
         className={`${styles.sidebar} ${
@@ -321,7 +333,7 @@ export default function Home() {
             sidebarCollapsed ? styles.identityCollapsed : ""
           }`}
         >
-          <activeMode.icon
+          <currentMode.icon
             className={styles.mark}
             width={sidebarCollapsed ? 34 : 42}
             height={sidebarCollapsed ? 34 : 42}
@@ -346,6 +358,30 @@ export default function Home() {
         )}
         {sidebarCollapsed ? null : (
           <p className={styles.sectionLabel}>{copy.joeyModesHeading}</p>
+        )}
+        {sidebarCollapsed ? null : (
+          <ul className={styles.modeList}>
+            {modes.map((candidate) => (
+              <li key={candidate.id}>
+                <button
+                  type="button"
+                  className={`${styles.modeButton} ${
+                    candidate.id === selectedModeId ? styles.modeButtonActive : ""
+                  }`}
+                  onClick={() => handleSelectMode(candidate.id)}
+                  aria-pressed={candidate.id === selectedModeId}
+                >
+                  <candidate.icon
+                    className={styles.modeButtonIcon}
+                    width={20}
+                    height={20}
+                    aria-hidden="true"
+                  />
+                  {candidate.name}
+                </button>
+              </li>
+            ))}
+          </ul>
         )}
         {sidebarCollapsed ? null : (
           <div
@@ -389,7 +425,7 @@ export default function Home() {
               <div className={styles.introRow}>
                 <JoeyMascot />
                 <div className={styles.speechBubble}>
-                  <p>{activeMode.welcomeIntro}</p>
+                  <p>{currentMode.welcomeIntro}</p>
                 </div>
               </div>
               <h1>{copy.welcomeTitle}</h1>
@@ -402,13 +438,13 @@ export default function Home() {
                   <li className={`${styles.messageRow} ${styles.assistantRow}`} key={message.id}>
                     <div className={styles.assistantMessage}>
                       <p className={styles.assistantLabel}>
-                        <activeMode.icon
+                        <currentMode.icon
                           className={styles.assistantAvatar}
                           width={25}
                           height={25}
                           aria-hidden="true"
                         />
-                        {activeMode.name}
+                        {currentMode.name}
                       </p>
                       <div className={`${styles.messageContent} ${styles.markdown}`}>
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -429,13 +465,13 @@ export default function Home() {
                 <li className={`${styles.messageRow} ${styles.assistantRow}`}>
                   <div className={`${styles.assistantMessage} ${styles.pendingMessage}`}>
                     <p className={styles.assistantLabel}>
-                      <activeMode.icon
+                      <currentMode.icon
                         className={styles.assistantAvatar}
                         width={25}
                         height={25}
                         aria-hidden="true"
                       />
-                      {activeMode.name}
+                      {currentMode.name}
                     </p>
                     <p className={styles.messageContent}>{copy.thinkingMessage}</p>
                   </div>
@@ -492,7 +528,7 @@ export default function Home() {
             >
               {copy.disclaimerBuilder}
             </a>{" "}
-            · {activeMode.disclaimer}
+            · {currentMode.disclaimer}
           </p>
         </footer>
       </section>

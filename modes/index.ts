@@ -1,14 +1,17 @@
 import babyJoey from "./baby-joey/mode";
+import evilJoey from "./evil-joey/mode";
 // Add new modes here as they're contributed:
 // import bendigoJoey from "./bendigo-joey/mode";
 
-const modes = [babyJoey];
+/** Every registered mode — used to render the Joey Modes switcher. */
+export const modes = [babyJoey, evilJoey];
 
 const DEFAULT_MODE_ID = "baby-joey";
 
 /**
- * The mode this deployment renders. Override locally via
+ * The mode this deployment renders by default. Override locally via
  * NEXT_PUBLIC_JOEY_MODE in .env.local to preview a mode you're building.
+ * The sidebar switcher can change the active mode at runtime from here.
  */
 export const activeMode =
   modes.find((candidate) => candidate.id === process.env.NEXT_PUBLIC_JOEY_MODE) ??

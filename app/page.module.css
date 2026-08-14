@@ -117,6 +117,51 @@
   text-transform: uppercase;
 }
 
+.modeList {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modeButton {
+  width: 100%;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.modeButton:hover {
+  background: var(--surface-soft);
+}
+
+.modeButton:focus-visible {
+  outline: 2px solid rgba(74, 122, 94, 0.55);
+  outline-offset: 2px;
+}
+
+.modeButtonActive {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-soft));
+  border-color: var(--accent);
+}
+
+.modeButtonIcon {
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
 .sidebarResizeHandle {
   position: absolute;
   top: 0;
