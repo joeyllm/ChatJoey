@@ -13,11 +13,17 @@ this mode's folder unless explicitly required:
   arbitrary CSS, layout, or spacing here.
 - `icon.tsx` — your mode's badge icon. Fine to leave the placeholder in
   place if you don't have custom art yet.
+- `mascot.tsx` — the welcome-screen mascot. By default this re-exports
+  Baby Joey's mascot (see the file) — leave that as-is unless your mode
+  wants custom mascot art/animation. If you do customise it, keep the
+  component and its `mascot.module.css` (if any) self-contained in this
+  folder; don't edit another mode's mascot files.
 
 Steps:
 
 1. `cp -r modes/template modes/your-mode-id`
-2. Edit `mode.ts`, `prompt.ts`, `theme.ts`, `icon.tsx` in your new folder.
+2. Edit `mode.ts`, `prompt.ts`, `theme.ts`, `icon.tsx`, and (optionally)
+   `mascot.tsx` in your new folder.
 3. Register it in `modes/index.ts` (import + add to the `modes` array).
 4. Preview locally: `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev`.
 5. Open a pull request. Do not touch `app/page.tsx`, `app/api/`, or any

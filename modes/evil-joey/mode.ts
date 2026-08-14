@@ -1,5 +1,6 @@
 import type { JoeyMode } from "../types";
 import icon from "./icon";
+import mascot from "./mascot";
 import prompt from "./prompt";
 import theme from "./theme";
 
@@ -14,6 +15,7 @@ const evilJoeyMode: JoeyMode = {
   prompt,
   theme,
   icon,
+  mascot,
 };
 
 export default evilJoeyMode;

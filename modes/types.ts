@@ -35,4 +35,10 @@ export type JoeyMode = {
   theme: JoeyTheme;
   /** Imported from this mode's icon.tsx. */
   icon: ComponentType<SVGProps<SVGSVGElement>>;
+  /**
+   * The welcome-screen mascot. Imported from this mode's mascot.tsx. A mode
+   * that doesn't want a custom mascot can just re-export another mode's
+   * (see modes/template/mascot.tsx) instead of duplicating the markup/CSS.
+   */
+  mascot: ComponentType;
 };

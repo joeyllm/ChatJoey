@@ -1,6 +1,6 @@
-import styles from "./JoeyMascot.module.css";
+import styles from "./mascot.module.css";
 
-export default function JoeyMascot() {
+export default function EvilJoeyMascot() {
   return (
     <div className={styles.mascot} aria-hidden="true">
       <div className={styles.contenedor}>
@@ -32,6 +32,8 @@ export default function JoeyMascot() {
           <div className={styles.orejitas}></div>
 
           <div className={styles.cabeza3}>
+            <span className={styles.hornLeft}></span>
+            <span className={styles.hornRight}></span>
             <div className={styles.ojitos}>
               <div className={styles.irisitos}></div>
             </div>

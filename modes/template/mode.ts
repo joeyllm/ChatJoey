@@ -1,5 +1,6 @@
 import type { JoeyMode } from "../types";
 import icon from "./icon";
+import mascot from "./mascot";
 import prompt from "./prompt";
 import theme from "./theme";
 
@@ -23,10 +24,11 @@ const templateMode: JoeyMode = {
   // Footer disclaimer sentence for this mode.
   disclaimer: "Template Joey is still learning and can get things wrong.",
 
-  // See prompt.ts, theme.ts, and icon.tsx in this folder.
+  // See prompt.ts, theme.ts, icon.tsx, and mascot.tsx in this folder.
   prompt,
   theme,
   icon,
+  mascot,
 };
 
 export default templateMode;

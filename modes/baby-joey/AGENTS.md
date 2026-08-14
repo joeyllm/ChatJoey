@@ -24,5 +24,9 @@ Green-and-gold reads as Australian without looking like sports branding.
 - `theme.ts` — the colours above, one value each.
 - `icon.tsx` — the kangaroo badge. Don't repurpose this art for another
   mode; copy `template/` instead.
+- `mascot.tsx` / `mascot.module.css` — the welcome-screen mascot (mother +
+  joey). This is the "normal" mascot other modes re-export by default
+  (see `template/mascot.tsx`) — treat changes here as changing everyone's
+  default mascot, not just Baby Joey's.
 
 See `../AGENTS.md` for the rules that apply to every mode.

@@ -11,11 +11,15 @@
 5. Replace `icon.tsx` with your own badge art (keep the same component
    shape — it accepts `SVGProps` and spreads them onto the root `<svg>`),
    or leave the placeholder in place for now.
-6. Register your mode in `modes/index.ts`: import it and add it to the
+6. `mascot.tsx` re-exports Baby Joey's mascot by default — leave it as-is
+   unless your mode wants custom welcome-screen mascot art or animation.
+   If it does, replace it with your own component (and `mascot.module.css`
+   if needed), self-contained in this folder.
+7. Register your mode in `modes/index.ts`: import it and add it to the
    `modes` array.
-7. Preview it locally: set `NEXT_PUBLIC_JOEY_MODE=your-mode-id` in
+8. Preview it locally: set `NEXT_PUBLIC_JOEY_MODE=your-mode-id` in
    `.env.local`, then `npm run dev`.
-8. Open a pull request. Once it's reviewed, we'll deploy it to `beta` so you
+9. Open a pull request. Once it's reviewed, we'll deploy it to `beta` so you
    can test it against the real Joey LLM model.
 
 See `AGENTS.md` in this folder for the rules an AI coding agent should

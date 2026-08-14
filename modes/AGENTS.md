@@ -1,7 +1,8 @@
 # Joey Modes — rules for every mode
 
-A Joey Mode is a personality swap (prompt, name, theme colours, icon), not a
-fork of the app. If you're building or reviewing a mode, these rules apply.
+A Joey Mode is a personality swap (prompt, name, theme colours, icon,
+mascot), not a fork of the app. If you're building or reviewing a mode,
+these rules apply.
 
 ## Where you work
 
@@ -24,6 +25,16 @@ Only the fields on `JoeyTheme` (see `types.ts`) can be set: `accent`,
 No arbitrary CSS, no layout or spacing changes, no component overrides.
 Leave a field unset to keep Joey's normal default — don't restate the
 default value just to "be explicit."
+
+## `mascot.tsx` is optional per mode
+
+Every mode needs a `mascot: ComponentType` in `mode.ts`, but the file that
+supplies it doesn't have to be custom — see `template/mascot.tsx` for the
+default pattern of re-exporting another mode's mascot. Only add your own
+`mascot.tsx` (and `mascot.module.css` if it needs one) when your mode
+actually wants different mascot art or animation, and keep it self-contained
+in your mode's own folder — don't edit another mode's mascot to change
+yours.
 
 ## Testing a mode
 

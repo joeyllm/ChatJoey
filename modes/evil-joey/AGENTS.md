@@ -27,5 +27,8 @@ the badge icon — playful, not gothic or dark.
 - `icon.tsx` — the horned badge. Reuses Baby Joey's kangaroo geometry,
   recoloured, so it still reads as "a Joey" — keep that family resemblance
   if you tweak it further.
+- `mascot.tsx` / `mascot.module.css` — its own independent copy of the
+  welcome mascot, with small horns added to the joey's head only (not the
+  mother). Self-contained here; doesn't share code with Baby Joey's mascot.
 
 See `../AGENTS.md` for the rules that apply to every mode.

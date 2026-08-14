@@ -13,7 +13,6 @@ import { PanelLeftClose, PanelLeftOpen, Plus } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
-import JoeyMascot from "./components/JoeyMascot";
 import JoeyWordmark from "./components/JoeyWordmark";
 import { activeMode as defaultMode, modes } from "@/modes";
 import type { JoeyTheme } from "@/modes/types";
@@ -423,7 +422,7 @@ export default function Home() {
           {messages.length === 0 ? (
             <div className={styles.welcome}>
               <div className={styles.introRow}>
-                <JoeyMascot />
+                <currentMode.mascot />
                 <div className={styles.speechBubble}>
                   <p>{currentMode.welcomeIntro}</p>
                 </div>
