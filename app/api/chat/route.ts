@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-type ChatRole = "system" | "user" | "assistant";
+type ChatRole = "user" | "assistant";
 
 type ChatMessage = {
   role: ChatRole;
@@ -24,9 +24,7 @@ function isChatMessage(value: unknown): value is ChatMessage {
 
   const message = value as Record<string, unknown>;
   return (
-    (message.role === "system" ||
-      message.role === "user" ||
-      message.role === "assistant") &&
+    (message.role === "user" || message.role === "assistant") &&
     typeof message.content === "string" &&
     message.content.trim().length > 0 &&
     message.content.length <= MAX_CONTENT_LENGTH
@@ -81,7 +79,7 @@ function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
       return null;
     }
 
-    const data = line.slice(6);
+    const data = line.slice(6).trim();
     if (data === "[DONE]") {
       return null;
     }
@@ -93,27 +91,53 @@ function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
     return typeof delta === "string" ? delta : null;
   }
 
+  function enqueueDelta(
+    controller: ReadableStreamDefaultController<Uint8Array>,
+    line: string,
+  ) {
+    const delta = extractDelta(line);
+    if (delta) {
+      controller.enqueue(encoder.encode(delta));
+    }
+  }
+
+  function flushBufferedLines(
+    controller: ReadableStreamDefaultController<Uint8Array>,
+    streamComplete: boolean,
+  ) {
+    const lines = buffer.split(/\r?\n/);
+    buffer = lines.pop() ?? "";
+
+    for (const line of lines) {
+      enqueueDelta(controller, line);
+    }
+
+    if (streamComplete && buffer) {
+      enqueueDelta(controller, buffer);
+      buffer = "";
+    }
+  }
+
   return new ReadableStream<Uint8Array>({
     async pull(controller) {
       const { value, done } = await reader.read();
-      buffer += decoder.decode(value, { stream: !done });
 
-      const lines = buffer.split(/\r?\n/);
-      buffer = lines.pop() ?? "";
-
-      for (const line of lines) {
-        const delta = extractDelta(line);
-        if (delta) {
-          controller.enqueue(encoder.encode(delta));
-        }
+      if (value) {
+        buffer += decoder.decode(value, { stream: true });
       }
+
+      if (done) {
+        buffer += decoder.decode();
+      }
+
+      flushBufferedLines(controller, done);
 
       if (done) {
         controller.close();
       }
     },
     cancel() {
-      reader.cancel();
+      return reader.cancel();
     },
   });
 }

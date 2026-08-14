@@ -50,9 +50,10 @@ whole intro group (mascot + speech bubble) together as one unit.
 
 ## Testing a mode
 
-1. `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev` and confirm it looks and
-   behaves as intended (demo/mock replies are fine for this — see the root
-   README for how demo mode works).
+1. `npm run dev` and choose the mode from the sidebar, or run
+   `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev` to load it by default.
+   Confirm it looks and behaves as intended (demo/mock replies are fine for
+   this — see the root README for how demo mode works).
 2. `npx tsc --noEmit` should be clean.
 
 ## Submitting a mode

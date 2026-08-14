@@ -41,24 +41,28 @@ function clampSidebarWidth(width: number) {
   return Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, width));
 }
 
-const THEME_CSS_VARS: Record<keyof JoeyTheme, string> = {
+const THEME_CSS_VARS = {
   accent: "--accent",
   accentDeep: "--accent-deep",
   background: "--chat-background",
   userMessage: "--user-message-bg",
   speechBubble: "--speech-bubble-bg",
   sidebarTint: "--sidebar-tint",
+} satisfies Record<keyof JoeyTheme, `--${string}`>;
+
+type ThemeStyle = CSSProperties & {
+  [key: `--${string}`]: string | undefined;
 };
 
 function themeStyle(theme: JoeyTheme): CSSProperties {
-  const style: Record<string, string> = {};
-  for (const [key, cssVar] of Object.entries(THEME_CSS_VARS)) {
-    const value = theme[key as keyof JoeyTheme];
+  const style: ThemeStyle = {};
+  for (const key of Object.keys(THEME_CSS_VARS) as Array<keyof JoeyTheme>) {
+    const value = theme[key];
     if (value) {
-      style[cssVar] = value;
+      style[THEME_CSS_VARS[key]] = value;
     }
   }
-  return style as CSSProperties;
+  return style;
 }
 
 const copy = {
@@ -168,7 +172,14 @@ export default function Home() {
     event: ReactPointerEvent<HTMLDivElement>,
   ) {
     isDraggingSidebarRef.current = false;
-    event.currentTarget.releasePointerCapture(event.pointerId);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    setIsResizingSidebar(false);
+  }
+
+  function handleSidebarResizePointerCancel() {
+    isDraggingSidebarRef.current = false;
     setIsResizingSidebar(false);
   }
 
@@ -249,6 +260,20 @@ export default function Home() {
       ]);
       setMode(chatMode);
 
+      const appendAssistantDelta = (delta: string) => {
+        if (!delta) {
+          return;
+        }
+
+        setMessages((currentMessages) =>
+          currentMessages.map((message) =>
+            message.id === assistantId
+              ? { ...message, content: `${message.content}${delta}` }
+              : message,
+          ),
+        );
+      };
+
       if (chatMode === "mock") {
         await response.body.cancel();
         const preview =
@@ -265,7 +290,6 @@ export default function Home() {
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let assistantContent = "";
 
       while (true) {
         const { value, done } = await reader.read();
@@ -273,15 +297,10 @@ export default function Home() {
           break;
         }
 
-        assistantContent += decoder.decode(value, { stream: true });
-        setMessages((currentMessages) =>
-          currentMessages.map((message) =>
-            message.id === assistantId
-              ? { ...message, content: assistantContent }
-              : message,
-          ),
-        );
+        appendAssistantDelta(decoder.decode(value, { stream: true }));
       }
+
+      appendAssistantDelta(decoder.decode());
     } catch {
       setErrorMessage(copy.requestFailed);
       setMode("error");
@@ -411,6 +430,8 @@ export default function Home() {
             onPointerDown={handleSidebarResizePointerDown}
             onPointerMove={handleSidebarResizePointerMove}
             onPointerUp={handleSidebarResizePointerUp}
+            onPointerCancel={handleSidebarResizePointerCancel}
+            onLostPointerCapture={handleSidebarResizePointerCancel}
             onKeyDown={handleSidebarResizeKeyDown}
           />
         )}

@@ -3,7 +3,8 @@
 1. Copy this whole `template/` folder to a new folder next to it, named
    after your mode (e.g. `modes/bendigo-joey/`).
 2. In your copy, edit `mode.ts`: set `id` to match the folder name, then
-   fill in `name`, `description`, `welcomeIntro`, and `disclaimer`.
+   fill in `name`, `description`, `welcomeIntro`, `welcomeTitle`, and
+   `disclaimer`.
 3. Edit `prompt.ts` — additional instructions for your mode's personality
    and tone (not a full system prompt).
 4. Edit `theme.ts` — only the colours you want to change; leave the rest
@@ -17,8 +18,9 @@
    if needed), self-contained in this folder.
 7. Register your mode in `modes/index.ts`: import it and add it to the
    `modes` array.
-8. Preview it locally: set `NEXT_PUBLIC_JOEY_MODE=your-mode-id` in
-   `.env.local`, then `npm run dev`.
+8. Preview it locally: run `npm run dev` and pick it from the sidebar. To
+   make it the initial mode, set `NEXT_PUBLIC_JOEY_MODE=your-mode-id` in
+   `.env.local`.
 9. Open a pull request. Once it's reviewed, we'll deploy it to `beta` so you
    can test it against the real Joey LLM model.
 

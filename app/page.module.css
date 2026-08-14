@@ -41,12 +41,12 @@
 }
 
 .sidebarToggle:hover {
-  background: rgba(74, 122, 94, 0.12);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent-deep);
 }
 
 .sidebarToggle:focus-visible {
-  outline: 2px solid rgba(74, 122, 94, 0.55);
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
   outline-offset: 2px;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .newChatButton:focus-visible {
-  outline: 2px solid rgba(74, 122, 94, 0.55);
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
   outline-offset: 2px;
 }
 
@@ -156,7 +156,7 @@
 }
 
 .modeButton:focus-visible {
-  outline: 2px solid rgba(74, 122, 94, 0.55);
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
   outline-offset: 2px;
 }
 
@@ -214,11 +214,11 @@
 
 .sidebarResizeHandle:hover,
 .sidebarResizeHandle:focus-visible {
-  background: rgba(74, 122, 94, 0.25);
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 .sidebarResizeHandle:focus-visible {
-  outline: 2px solid rgba(74, 122, 94, 0.55);
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
   outline-offset: -2px;
 }
 
@@ -268,7 +268,7 @@
 .mark {
   flex: 0 0 auto;
   border-radius: 50%;
-  box-shadow: 0 8px 18px rgba(74, 122, 94, 0.25);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 25%, transparent);
   transition: opacity 0.15s ease;
 }
 
@@ -489,7 +489,7 @@
 
 .markdown code {
   padding: 2px 5px;
-  background: rgba(74, 122, 94, 0.1);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
   border-radius: 5px;
   font-size: 0.86em;
 }
@@ -553,8 +553,8 @@
 }
 
 .inputRow:focus-within {
-  border-color: rgba(74, 122, 94, 0.3);
-  box-shadow: 0 0 0 3px rgba(74, 122, 94, 0.08);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .inputRow textarea {
@@ -607,7 +607,7 @@
 
 .sendButton:focus-visible,
 .inputRow textarea:focus-visible {
-  outline: 3px solid rgba(74, 122, 94, 0.35);
+  outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
   outline-offset: 3px;
 }
 

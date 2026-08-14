@@ -1,8 +1,9 @@
 import { useId, type SVGProps } from "react";
 
 export default function SydneyJoeyIcon(props: SVGProps<SVGSVGElement>) {
-  const titleId = useId();
-  const clipId = useId();
+  const id = useId().replace(/:/g, "");
+  const titleId = `sydney-joey-icon-title-${id}`;
+  const clipId = `sydney-joey-icon-clip-${id}`;
 
   return (
     <svg

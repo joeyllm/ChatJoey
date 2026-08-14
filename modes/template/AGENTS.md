@@ -25,7 +25,8 @@ Steps:
 2. Edit `mode.ts`, `prompt.ts`, `theme.ts`, `icon.tsx`, and (optionally)
    `mascot.tsx` in your new folder.
 3. Register it in `modes/index.ts` (import + add to the `modes` array).
-4. Preview locally: `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev`.
+4. Preview locally with `npm run dev` and the sidebar switcher, or run
+   `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev` to load it by default.
 5. Open a pull request. Do not touch `app/page.tsx`, `app/api/`, or any
    other shared app code — if the task seems to require that, stop and
    flag it instead of doing it.

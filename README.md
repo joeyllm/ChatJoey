@@ -35,7 +35,7 @@ Cross AI maintainer can deploy it to
 [beta.joeyllm.ai](https://beta.joeyllm.ai) so you can test it against the
 real Joey LLM model.
 
-No API key needed.
+You do not need a local API key for that workflow.
 
 ## 🛠️ Create a Joey Mode
 
@@ -62,5 +62,3 @@ We review it, test it on beta, and if everything looks good, merge it.
 
 Fun and weird is great. Hate, harassment, or unsafe content isn't — those
 modes get rejected or removed.
-
-

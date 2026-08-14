@@ -1,8 +1,9 @@
 import { useId, type SVGProps } from "react";
 
 export default function EvilJoeyIcon(props: SVGProps<SVGSVGElement>) {
-  const titleId = useId();
-  const clipId = useId();
+  const id = useId().replace(/:/g, "");
+  const titleId = `evil-joey-icon-title-${id}`;
+  const clipId = `evil-joey-icon-clip-${id}`;
 
   return (
     <svg

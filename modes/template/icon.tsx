@@ -6,7 +6,8 @@ import { useId, type SVGProps } from "react";
  * into the sidebar mark and chat avatar slots without other changes.
  */
 export default function TemplateIcon(props: SVGProps<SVGSVGElement>) {
-  const titleId = useId();
+  const id = useId().replace(/:/g, "");
+  const titleId = `template-icon-title-${id}`;
 
   return (
     <svg

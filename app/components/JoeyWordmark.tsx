@@ -1,8 +1,8 @@
 import { useId, type SVGProps } from "react";
 
 export default function JoeyWordmark(props: SVGProps<SVGSVGElement>) {
-  const titleId = useId();
-  const inkClass = `joey-ink-${useId().replace(/:/g, "")}`;
+  const id = useId().replace(/:/g, "");
+  const titleId = `joey-wordmark-title-${id}`;
 
   return (
     <svg
@@ -15,7 +15,6 @@ export default function JoeyWordmark(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <title id={titleId}>JoeyLLM</title>
-      <style>{`.${inkClass} { fill: #172033; }`}</style>
       <text
         x="128"
         y="54"
@@ -25,7 +24,7 @@ export default function JoeyWordmark(props: SVGProps<SVGSVGElement>) {
         fontWeight="500"
         letterSpacing="-1.5"
       >
-        <tspan className={inkClass}>Joey</tspan>
+        <tspan fill="#172033">Joey</tspan>
         <tspan fill="#C9762F">LLM</tspan>
       </text>
     </svg>
