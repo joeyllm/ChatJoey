@@ -12,7 +12,7 @@
 5. Replace `icon.tsx` with your own badge art (keep the same component
    shape — it accepts `SVGProps` and spreads them onto the root `<svg>`),
    or leave the placeholder in place for now.
-6. `mascot.tsx` re-exports Baby Joey's mascot by default — leave it as-is
+6. `mascot.tsx` re-exports Little Joey's mascot by default — leave it as-is
    unless your mode wants custom welcome-screen mascot art or animation.
    If it does, replace it with your own component (and `mascot.module.css`
    if needed), self-contained in this folder.

@@ -1,9 +1,9 @@
 import { useId, type SVGProps } from "react";
 
-export default function JoeyIcon(props: SVGProps<SVGSVGElement>) {
+export default function LittleJoeyIcon(props: SVGProps<SVGSVGElement>) {
   const id = useId().replace(/:/g, "");
-  const titleId = `baby-joey-icon-title-${id}`;
-  const clipId = `baby-joey-icon-clip-${id}`;
+  const titleId = `little-joey-icon-title-${id}`;
+  const clipId = `little-joey-icon-clip-${id}`;
 
   return (
     <svg
@@ -15,7 +15,7 @@ export default function JoeyIcon(props: SVGProps<SVGSVGElement>) {
       aria-labelledby={titleId}
       {...props}
     >
-      <title id={titleId}>JoeyLLM</title>
+      <title id={titleId}>Little Joey</title>
       <defs>
         <clipPath id={clipId}>
           <circle cx="0" cy="0" r="82" />

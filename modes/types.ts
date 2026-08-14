@@ -15,7 +15,7 @@ export type JoeyTheme = {
 };
 
 export type JoeyMode = {
-  /** Folder name, e.g. "baby-joey". Must be unique across modes. */
+  /** Folder name, e.g. "little-joey". Must be unique across modes. */
   id: string;
   /** Persona name — shown in the chat label and welcome bubble. */
   name: string;

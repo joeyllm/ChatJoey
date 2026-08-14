@@ -1,13 +1,13 @@
-import babyJoey from "./baby-joey/mode";
 import evilJoey from "./evil-joey/mode";
+import littleJoey from "./little-joey/mode";
 import sydneyJoey from "./sydney-joey/mode";
 // Add new modes here as they're contributed:
 // import bendigoJoey from "./bendigo-joey/mode";
 
 /** Every registered mode — used to render the Joey Modes switcher. */
-export const modes = [babyJoey, evilJoey, sydneyJoey];
+export const modes = [littleJoey, evilJoey, sydneyJoey];
 
-const DEFAULT_MODE_ID = "baby-joey";
+const DEFAULT_MODE_ID = "little-joey";
 
 /**
  * The mode this deployment renders by default. Override locally via

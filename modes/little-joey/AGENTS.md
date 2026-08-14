@@ -1,4 +1,4 @@
-# Baby Joey
+# Little Joey
 
 This is the **default** Joey Mode — whatever ships here is what everyone
 sees unless another mode is selected. Changes here affect the default
@@ -27,6 +27,6 @@ Green-and-gold reads as Australian without looking like sports branding.
 - `mascot.tsx` / `mascot.module.css` — the welcome-screen mascot (mother +
   joey). This is the "normal" mascot other modes re-export by default
   (see `template/mascot.tsx`) — treat changes here as changing everyone's
-  default mascot, not just Baby Joey's.
+  default mascot, not just Little Joey's.
 
 See `../AGENTS.md` for the rules that apply to every mode.

@@ -29,9 +29,9 @@ names in the same stylesheet).
 - `prompt.ts` — the Sydney/NSW context instructions. Additive, not a
   replacement for Joey's real backend system prompt.
 - `theme.ts` — the colours above, one value each.
-- `icon.tsx` — the badge. Reuses Baby Joey's kangaroo geometry, recoloured,
+- `icon.tsx` — the badge. Reuses Little Joey's kangaroo geometry, recoloured,
   to keep the family resemblance.
-- `mascot.tsx` / `mascot.module.css` — Baby Joey's kangaroo plus the Opera
+- `mascot.tsx` / `mascot.module.css` — Little Joey's kangaroo plus the Opera
   House backdrop behind it (lower DOM position + explicit low z-index, so
   the kangaroo always paints in front). Self-contained; don't edit other
   modes' mascot files to change this one.

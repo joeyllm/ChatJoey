@@ -107,9 +107,16 @@ export default function Home() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
   const isDraggingSidebarRef = useRef(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const currentMode =
     modes.find((candidate) => candidate.id === selectedModeId) ?? defaultMode;
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -134,6 +141,10 @@ export default function Home() {
   }
 
   function handleNewChat() {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
     setMessages([]);
     setMode("ready");
     setErrorMessage(null);
@@ -209,6 +220,12 @@ export default function Home() {
     };
     const requestMessages = [...messages, userMessage];
 
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     setMessages(requestMessages);
     setDraft("");
     setErrorMessage(null);
@@ -218,6 +235,7 @@ export default function Home() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           // Primed as ordinary conversation turns, not a "system" message —
           // this model doesn't reliably follow persona instructions given
@@ -302,8 +320,15 @@ export default function Home() {
 
       appendAssistantDelta(decoder.decode());
     } catch {
+      if (controller.signal.aborted) {
+        return;
+      }
       setErrorMessage(copy.requestFailed);
       setMode("error");
+    } finally {
+      if (abortControllerRef.current === controller) {
+        abortControllerRef.current = null;
+      }
     }
   }
 

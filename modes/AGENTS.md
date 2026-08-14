@@ -62,5 +62,5 @@ Open a pull request. We don't hand out API keys — once reviewed, we deploy
 approved modes to `beta` (`beta.joeyllm.ai`) to test against the real Joey
 LLM model before merging.
 
-See also: `template/AGENTS.md` (starting a new mode) and `baby-joey/AGENTS.md`
+See also: `template/AGENTS.md` (starting a new mode) and `little-joey/AGENTS.md`
 (the default mode).

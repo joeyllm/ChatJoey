@@ -84,11 +84,15 @@ function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
       return null;
     }
 
-    const chunk = JSON.parse(data) as {
-      choices?: Array<{ delta?: { content?: unknown } }>;
-    };
-    const delta = chunk.choices?.[0]?.delta?.content;
-    return typeof delta === "string" ? delta : null;
+    try {
+      const chunk = JSON.parse(data) as {
+        choices?: Array<{ delta?: { content?: unknown } }>;
+      };
+      const delta = chunk.choices?.[0]?.delta?.content;
+      return typeof delta === "string" ? delta : null;
+    } catch {
+      return null;
+    }
   }
 
   function enqueueDelta(

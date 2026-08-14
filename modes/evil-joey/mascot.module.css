@@ -415,7 +415,7 @@
   transform: rotate(35deg);
 }
 
-/* BABY JOEYS */
+/* LITTLE JOEYS */
 
 .cabeza3 {
   position: absolute;
@@ -470,7 +470,7 @@
   transform: rotate(42deg);
 }
 
-/* BABY EYES */
+/* LITTLE JOEY EYES */
 
 .ojitos {
   position: absolute;
@@ -530,7 +530,7 @@
   margin: 0 27px;
 }
 
-/* BABY NOSE */
+/* LITTLE JOEY NOSE */
 
 .hocico3 {
   position: absolute;
@@ -562,7 +562,7 @@
   margin: -9px -2px;
 }
 
-/* BABY POSITION */
+/* LITTLE JOEY POSITION */
 
 .cangurito {
   position: absolute;

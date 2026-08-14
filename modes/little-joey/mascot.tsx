@@ -1,6 +1,6 @@
 import styles from "./mascot.module.css";
 
-export default function BabyJoeyMascot() {
+export default function LittleJoeyMascot() {
   return (
     <div className={styles.mascot} aria-hidden="true">
       <div className={styles.contenedor}>

@@ -14,7 +14,7 @@ this mode's folder unless explicitly required:
 - `icon.tsx` — your mode's badge icon. Fine to leave the placeholder in
   place if you don't have custom art yet.
 - `mascot.tsx` — the welcome-screen mascot. By default this re-exports
-  Baby Joey's mascot (see the file) — leave that as-is unless your mode
+  Little Joey's mascot (see the file) — leave that as-is unless your mode
   wants custom mascot art/animation. If you do customise it, keep the
   component and its `mascot.module.css` (if any) self-contained in this
   folder; don't edit another mode's mascot files.
