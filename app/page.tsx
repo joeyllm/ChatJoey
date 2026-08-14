@@ -12,6 +12,7 @@ import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
 import JoeyMascot from "./components/JoeyMascot";
 import JoeyIcon from "./components/JoeyIcon";
+import JoeyWordmark from "./components/JoeyWordmark";
 
 type MessageRole = "user" | "assistant";
 
@@ -189,7 +190,7 @@ export default function Home() {
       <aside className={styles.sidebar} aria-label="Joey LLM">
         <div className={styles.identity}>
           <JoeyIcon className={styles.mark} width={42} height={42} aria-hidden="true" />
-          <p className={styles.productName}>Joey LLM</p>
+          <JoeyWordmark className={styles.productName} width={81} height={24} />
         </div>
       </aside>
       <section className={styles.chatShell} aria-label={copy.chatAriaLabel}>

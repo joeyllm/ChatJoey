@@ -27,7 +27,7 @@ export default function JoeyIcon(props: SVGProps<SVGSVGElement>) {
           cy="-44"
           rx="9"
           ry="20"
-          fill="#7A4F2E"
+          fill="#8C5D38"
           transform="rotate(-28,-27,-44)"
         />
         <ellipse
@@ -35,14 +35,14 @@ export default function JoeyIcon(props: SVGProps<SVGSVGElement>) {
           cy="-44"
           rx="9"
           ry="20"
-          fill="#7A4F2E"
+          fill="#8C5D38"
           transform="rotate(28,27,-44)"
         />
-        <ellipse cx="0" cy="42" rx="26" ry="22" fill="#7A4F2E" />
-        <circle cx="0" cy="-10" r="32" fill="#7A4F2E" />
-        <ellipse cx="0" cy="14" rx="13" ry="12" fill="#7A4F2E" />
-        <circle cx="-27" cy="34" r="8" fill="#7A4F2E" />
-        <circle cx="27" cy="34" r="8" fill="#7A4F2E" />
+        <ellipse cx="0" cy="42" rx="26" ry="22" fill="#8C5D38" />
+        <circle cx="0" cy="-10" r="32" fill="#8C5D38" />
+        <ellipse cx="0" cy="14" rx="13" ry="12" fill="#8C5D38" />
+        <circle cx="-27" cy="34" r="8" fill="#8C5D38" />
+        <circle cx="27" cy="34" r="8" fill="#8C5D38" />
         <path
           d="M -90,8 Q 0,80 90,8 L 90,100 L -90,100 Z"
           fill="#F6EEE3"

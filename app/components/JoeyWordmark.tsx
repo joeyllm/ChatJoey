@@ -15,14 +15,7 @@ export default function JoeyWordmark(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <title id={titleId}>JoeyLLM</title>
-      <style>
-        {`
-          .${inkClass} { fill: #1D211F; }
-          @media (prefers-color-scheme: dark) {
-            .${inkClass} { fill: #F2E9DC; }
-          }
-        `}
-      </style>
+      <style>{`.${inkClass} { fill: #172033; }`}</style>
       <text
         x="128"
         y="54"
