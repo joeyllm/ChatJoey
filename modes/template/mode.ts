@@ -19,7 +19,8 @@ const templateMode: JoeyMode = {
   // Falls back to `name` above if you leave this out.
   // switcherLabel: "Template",
 
-  // Short blurb — will show in a future Joey Modes picker UI.
+  // Very short — shown in a tooltip when hovering/focusing this mode's
+  // button in the sidebar switcher.
   description: "One-line description of your mode's personality.",
 
   // Mascot speech-bubble text on the welcome screen.

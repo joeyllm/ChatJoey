@@ -7,7 +7,7 @@ import theme from "./theme";
 const sydneyJoeyMode: JoeyMode = {
   id: "sydney-joey",
   name: "Sydney Joey",
-  description: "Local knowledge of Sydney and NSW — suburbs, transport, landmarks, and more.",
+  description: "Australian Joey with strong Sydney knowledge and context.",
   welcomeIntro:
     "G’day, I’m Sydney Joey. Ask me anything — I know my way round the Harbour City.",
   welcomeTitle: "What can Sydney Joey help you with today?",

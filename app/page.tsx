@@ -76,6 +76,7 @@ const copy = {
     "Joey’s memory is temporary for now. Refreshing or starting over will clear this chat.",
   newChat: "New Chat",
   joeyModesHeading: "Joey Modes",
+  joeyModesSubtext: "Choose how Joey behaves and responds.",
   inputLabel: "Message",
   placeholder: "Message Joey…",
   sendButtonLabel: "Send message",
@@ -364,7 +365,10 @@ export default function Home() {
           </button>
         )}
         {sidebarCollapsed ? null : (
-          <p className={styles.sectionLabel}>{copy.joeyModesHeading}</p>
+          <>
+            <p className={styles.sectionLabel}>{copy.joeyModesHeading}</p>
+            <p className={styles.sectionSubtext}>{copy.joeyModesSubtext}</p>
+          </>
         )}
         {sidebarCollapsed ? null : (
           <ul className={styles.modeList}>
@@ -386,6 +390,9 @@ export default function Home() {
                   />
                   {candidate.switcherLabel ?? candidate.name}
                   {candidate.id === defaultMode.id ? " (default)" : ""}
+                  <span className={styles.modeTooltip} role="tooltip">
+                    {candidate.description}
+                  </span>
                 </button>
               </li>
             ))}

@@ -8,7 +8,7 @@ const babyJoeyMode: JoeyMode = {
   id: "baby-joey",
   name: "Baby Joey",
   switcherLabel: "Little Joey",
-  description: "The default Joey persona — friendly, curious, still learning.",
+  description: "Friendly, simple and playful.",
   welcomeIntro:
     "Hi, I’m Baby Joey. I’m new here and still learning what it means to be Australian.",
   welcomeTitle: "What can little Joey help you with today?",

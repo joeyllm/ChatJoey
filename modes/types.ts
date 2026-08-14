@@ -24,7 +24,10 @@ export type JoeyMode = {
    * `name` (e.g. a shorter nickname). Falls back to `name` when unset.
    */
   switcherLabel?: string;
-  /** Short description — for a future Joey Modes picker UI (unused for now). */
+  /**
+   * Very short description shown when hovering/focusing this mode's button
+   * in the sidebar switcher. Keep it to one short sentence.
+   */
   description: string;
   /** Mascot speech-bubble text shown on the welcome screen. */
   welcomeIntro: string;

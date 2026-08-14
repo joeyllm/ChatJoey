@@ -7,7 +7,7 @@ import theme from "./theme";
 const evilJoeyMode: JoeyMode = {
   id: "evil-joey",
   name: "Evil Joey",
-  description: "A cheeky, mischievous Joey who loves a wind-up — fun and light, never mean.",
+  description: "Mischievous personality for fun/testing.",
   welcomeIntro:
     "Oi, it's Evil Joey. I'm not actually evil — just here to stir the pot a little and have some fun.",
   welcomeTitle: "What can Evil Joey help you with today?",
