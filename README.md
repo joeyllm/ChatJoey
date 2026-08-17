@@ -21,7 +21,7 @@ general contribution notes below.
 - Main changes: added `modes/eco-joey/`, registered Eco Joey in
   `modes/index.ts`, and gave it an independent prompt, theme, icon, welcome
   text, and disclaimer.
-- Local branch: `sunwen/eco-joey`.
+- Local branch: `eco-joey`.
 - Local run steps: install dependencies with `npm install`, run
   `npm run dev`, then select Eco Joey from the Joey Modes list.
 - Test plan: verify Eco Joey appears in the sidebar, can be selected in
