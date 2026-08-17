@@ -3,6 +3,7 @@
   min-height: 100dvh;
   display: flex;
   align-items: stretch;
+  overflow: hidden;
   background:
     radial-gradient(circle at 15% 0%, rgba(80, 112, 224, 0.12), transparent 32%),
     radial-gradient(circle at 90% 90%, rgba(136, 96, 204, 0.09), transparent 35%),
@@ -16,7 +17,12 @@
   padding: 26px 18px 20px;
   background: var(--sidebar-tint);
   border-right: 1px solid var(--line);
-  transition: width 0.2s ease, flex-basis 0.2s ease;
+  transition: width 0.2s ease, flex-basis 0.2s ease, transform 0.2s ease;
+}
+
+.sidebarBackdrop,
+.mobileMenuButton {
+  display: none;
 }
 
 .sidebarNoTransition {
@@ -639,30 +645,91 @@
   text-decoration-color: currentColor;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .sidebar {
-    width: 72px !important;
-    flex-basis: 72px !important;
-    padding: 16px 10px;
+    position: fixed;
+    z-index: 40;
+    inset: 0 auto 0 0;
+    width: min(86vw, 320px) !important;
+    height: 100vh;
+    height: 100dvh;
+    padding: 20px 18px;
+    overflow-y: auto;
+    border-right: 1px solid var(--line);
+    box-shadow: 18px 0 42px rgba(23, 32, 51, 0.2);
+    transform: translateX(-105%);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .sidebarBackdrop {
+    position: fixed;
+    z-index: 30;
+    inset: 0;
+    display: block;
+    padding: 0;
+    background: rgba(23, 32, 51, 0.44);
+    border: 0;
+    cursor: pointer;
+  }
+
+  .mobileMenuButton {
+    width: 44px;
+    height: 44px;
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-items: center;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .mobileMenuButton:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    outline-offset: 2px;
+  }
+
+  .sidebarToggle {
+    top: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .identity {
+    min-height: 44px;
+    padding-right: 50px;
+  }
+
+  .modeButton,
+  .newChatButton {
+    min-height: 44px;
+  }
+
+  .modeTooltip {
+    display: none;
   }
 
   .sidebarResizeHandle {
     display: none;
   }
 
-  .identity {
-    flex-direction: column;
-    gap: 6px;
-  }
-
   .header {
-    min-height: 70px;
+    min-height: 68px;
     padding: 13px 15px;
+    justify-content: space-between;
     gap: 10px;
   }
 
   .status {
-    display: none;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .conversation {
@@ -694,7 +761,7 @@
   }
 
   .composerArea {
-    padding: 11px 11px 9px;
+    padding: 11px 11px max(9px, env(safe-area-inset-bottom));
   }
 
   .sendButton {
