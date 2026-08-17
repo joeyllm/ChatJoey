@@ -1,3 +1,4 @@
+import coastalJoey from "./coastal-joey/mode";
 import evilJoey from "./evil-joey/mode";
 import ecoJoey from "./eco-joey/mode";
 import littleJoey from "./little-joey/mode";
@@ -14,6 +15,7 @@ export const modes = [
   sydneyJoey,
   sportsJoey,
   ecoJoey,
+  coastalJoey,
 ];
 
 const DEFAULT_MODE_ID = "little-joey";
@@ -24,6 +26,9 @@ const DEFAULT_MODE_ID = "little-joey";
  * The sidebar switcher can change the active mode at runtime from here.
  */
 export const activeMode =
-  modes.find((candidate) => candidate.id === process.env.NEXT_PUBLIC_JOEY_MODE) ??
+  modes.find(
+    (candidate) =>
+      candidate.id === process.env.NEXT_PUBLIC_JOEY_MODE,
+  ) ??
   modes.find((candidate) => candidate.id === DEFAULT_MODE_ID) ??
   modes[0];
