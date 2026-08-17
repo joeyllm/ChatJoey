@@ -62,3 +62,46 @@ We review it, test it on beta, and if everything looks good, merge it.
 
 Fun and weird is great. Hate, harassment, or unsafe content isn't — those
 modes get rejected or removed.
+
+## Sprint 5 local branch notes
+
+### Branch: `xingyu/a14-sports-joey`
+
+Purpose: covers S5-A14 by adding Sports Joey as an isolated Joey Mode.
+
+Changes:
+
+- Added `modes/sports-joey/` from the existing mode template.
+- Created Sports Joey identity text, prompt, green/gold theme, and badge icon.
+- Reused Little Joey's mascot through the template re-export pattern.
+- Registered Sports Joey in `modes/index.ts`.
+
+Local run steps:
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000 in demo/mock mode and select Sports Joey from the
+sidebar. No API key is required.
+
+Local checks to run:
+
+```bash
+npm run lint
+npx tsc --noEmit
+```
+
+Limitations:
+
+- This branch is local-only and has not been deployed to Vercel or any other
+  online platform.
+- This branch does not merge into `main`, `live`, or `beta`.
+- This branch does not add API keys, backend work, vector database work, or
+  unrelated documentation.
+
+AI-tool contribution:
+
+- Codex inspected the Joey Modes rules, created the Sports Joey mode from the
+  template, registered it, and updated README evidence for client review.
