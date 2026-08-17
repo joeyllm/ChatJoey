@@ -62,3 +62,56 @@ We review it, test it on beta, and if everything looks good, merge it.
 
 Fun and weird is great. Hate, harassment, or unsafe content isn't — those
 modes get rejected or removed.
+
+## Sprint 5 local branch notes
+
+### Branch: `xingyu/mobile-a04-a05-overflow-tablet`
+
+Purpose: covers S5-A04 and S5-A05 for local-only mobile-first interface work.
+
+Changes:
+
+- Constrained narrow-screen chat content so long messages, URLs, and continuous
+  characters wrap instead of widening the page.
+- Kept code blocks and Markdown tables scrollable inside their own content
+  containers when they need horizontal space.
+- Tightened welcome, speech-bubble, message, and composer sizing on phone
+  viewports.
+- Added tablet-specific responsive rules around the 641px to 900px range while
+  preserving desktop sidebar collapse, resize, and Joey Mode tooltip behaviour.
+
+Local run steps:
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000 and test in demo/mock mode. Do not add `.env.local`
+or use a real JoeyLLM API key for this branch.
+
+Local checks to run:
+
+```bash
+npm run lint
+npx tsc --noEmit
+```
+
+Suggested viewport checks:
+
+- Phone: 320x568, 375x667, 390x844, 430x932.
+- Tablet and desktop: 768x1024, 1024x768, and a desktop-width viewport.
+- Content: long URL, continuous long word, fenced code block, and Markdown
+  table.
+
+Limitations:
+
+- This branch is local-only and has not been deployed to Vercel or any other
+  online platform.
+- This branch does not merge into `main`, `live`, or `beta`.
+- This branch uses local demo/mock mode only.
+
+AI-tool contribution:
+
+- Codex inspected the existing ChatJoey CSS and Sprint 5 constraints, then
+  updated responsive overflow handling and this README evidence section.
