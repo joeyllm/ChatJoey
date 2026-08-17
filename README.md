@@ -51,7 +51,7 @@ no environment variables needed once it's registered.
 
 ## 📱 Mobile header and chat viewport branch
 
-Branch: `codex/mobile-drawer-responsive`
+Branch: `mobile-drawer-responsive`
 
 This branch covers S5-A02 and S5-A03 only:
 
