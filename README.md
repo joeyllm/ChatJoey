@@ -62,3 +62,39 @@ We review it, test it on beta, and if everything looks good, merge it.
 
 Fun and weird is great. Hate, harassment, or unsafe content isn't — those
 modes get rejected or removed.
+
+## Sprint 5 — S5-A07 responsive layout tests
+
+This branch adds Playwright coverage for mobile landscape and tablet layouts.
+The suite checks the chat shell, composer, message flow, long-content overflow,
+tablet breakpoints, desktop regressions, and the mobile navigation dependency.
+
+Covered viewports:
+
+- Mobile landscape: `844x390` and `915x412`
+- Tablet portrait: `768x1024`
+- Tablet landscape: `1024x768`
+- Tablet breakpoint boundary: `767px`, `768px`, and `769px`
+
+Run the tests locally:
+
+```bash
+npm install
+npx playwright install chromium
+npm run test:a07
+```
+
+Open the most recent HTML report with:
+
+```bash
+npm run test:a07:report
+```
+
+The test server builds and runs the production app locally on port `3005`.
+No API key or deployment is required. Final acceptance should be run against
+an integration branch containing the completed S5-A02, S5-A03, S5-A04, and
+S5-A05 work.
+
+The S5-A01 mobile drawer dependency is intentionally reported as an explicit
+failure while that work is incomplete. This keeps the missing prerequisite
+visible instead of incorrectly treating it as an A07 layout regression.

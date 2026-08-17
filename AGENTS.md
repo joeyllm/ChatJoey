@@ -42,3 +42,17 @@ to `beta` (`beta.joeyllm.ai`) for testing against the real Joey LLM model.
 The sibling `ChatDocs` repo has deeper architecture/decisions/state notes,
 but it's due for a cleanup pass and isn't being actively maintained right
 now — treat it as background reference, not a required read.
+
+## S5-A07 test branch notes
+
+- Responsive end-to-end coverage lives in
+  `tests/responsive-layout.spec.ts` and is configured by
+  `playwright.config.ts`.
+- Run it with `npm run test:a07`; the production test server uses local port
+  `3005` and must not deploy the application or require a real API key.
+- Keep Playwright output (`playwright-report/`, `test-results/`, and
+  `blob-report/`) out of version control.
+- The S5-A01 mobile drawer check deliberately throws a clearly labelled
+  dependency error until A01 is complete. Do not weaken or silently skip it.
+- Perform final acceptance on an integration branch containing S5-A02 through
+  S5-A05. Do not change product code solely to make this test branch pass.

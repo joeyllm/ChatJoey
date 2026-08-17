@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:a07": "playwright test tests/responsive-layout.spec.ts",
+    "test:a07:report": "playwright show-report"
   },
   "dependencies": {
     "lucide-react": "^1.31.0",
