@@ -49,6 +49,23 @@ You do not need a local API key for that workflow.
 Run locally and pick your mode from the "Joey Modes" list in the sidebar —
 no environment variables needed once it's registered.
 
+## 📱 Mobile header and chat viewport branch
+
+Branch: `codex/mobile-drawer-responsive`
+
+This branch covers S5-A02 and S5-A03 only:
+
+- adds a compact mobile header with Joey branding, a 44 px navigation control,
+  and visible `Ready`, `Thinking`, `Demo`, `Live`, and `Error` states;
+- keeps the chat shell on `100dvh`, with messages scrolling independently and
+  the composer anchored to the bottom of the dynamic viewport;
+- adds iPhone safe-area padding and a compact landscape/soft-keyboard layout.
+
+Local checks completed: ESLint, TypeScript, and responsive browser checks at
+320×568, 375×667, 430×932, 667×375, 844×390, 768×1024, and 1024×768.
+No API key or deployment is required. Codex implemented and locally verified
+the interface changes; `AGENTS.md` did not require a scope update.
+
 Once your pull request is ready, we can deploy it to beta so you can see how
 it behaves with the real Joey model.
 
