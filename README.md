@@ -62,3 +62,32 @@ We review it, test it on beta, and if everything looks good, merge it.
 
 Fun and weird is great. Hate, harassment, or unsafe content isn't — those
 modes get rejected or removed.
+
+## Sprint 5 — S5-A08 keyboard and focus tests
+
+This branch adds Playwright coverage for keyboard interaction and focus
+behaviour across desktop, tablet portrait, and mobile landscape layouts.
+
+The suite verifies:
+
+- Enter sends a message and keeps focus in the composer
+- Shift+Enter inserts a newline without sending
+- Primary controls are reachable with Tab and show keyboard focus
+- Joey Mode, sidebar, and New Chat buttons work with Enter and Space
+- The sidebar resize separator responds to arrow keys
+- The S5-A01 mobile drawer closes with Escape and restores trigger focus
+
+Run locally:
+
+```bash
+npm install
+npx playwright install chromium
+npm run test:a08
+```
+
+Open the latest report with `npm run test:a08:report`. The production test
+server uses local port `3006`; no API key or deployment is required.
+
+The mobile drawer test intentionally reports an explicit S5-A01 dependency
+failure until A01 is complete. Final acceptance should be run against the
+integrated Sprint 5 implementation.
