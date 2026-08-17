@@ -69,9 +69,9 @@ const copy = {
   chatAriaLabel: "Joey LLM chat interface",
   status: "Ready",
   thinkingStatus: "Thinking",
-  liveStatus: "Joey LLM live",
-  previewStatus: "Local preview",
-  errorStatus: "Connection issue",
+  liveStatus: "Live",
+  previewStatus: "Demo",
+  errorStatus: "Error",
   messagesAriaLabel: "Conversation messages",
   thinkingMessage: "Thinking…",
   welcomeDescription:
@@ -354,6 +354,7 @@ export default function Home() {
   return (
     <main className={styles.page} style={themeStyle(currentMode.theme)}>
       <aside
+        id="joey-sidebar"
         ref={sidebarRef}
         className={`${styles.sidebar} ${
           isResizingSidebar ? styles.sidebarNoTransition : ""
@@ -372,6 +373,7 @@ export default function Home() {
           className={styles.sidebarToggle}
           onClick={toggleSidebarCollapsed}
           aria-expanded={!sidebarCollapsed}
+          aria-controls="joey-sidebar"
           aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {sidebarCollapsed ? (
@@ -463,14 +465,37 @@ export default function Home() {
       </aside>
       <section className={styles.chatShell} aria-label={copy.chatAriaLabel}>
         <header className={styles.header}>
+          <div className={styles.mobileHeaderIdentity}>
+            <button
+              type="button"
+              className={styles.mobileMenuButton}
+              onClick={toggleSidebarCollapsed}
+              aria-expanded={!sidebarCollapsed}
+              aria-controls="joey-sidebar"
+              aria-label={sidebarCollapsed ? "Expand navigation" : "Collapse navigation"}
+            >
+              {sidebarCollapsed ? (
+                <PanelLeftOpen size={22} aria-hidden="true" />
+              ) : (
+                <PanelLeftClose size={22} aria-hidden="true" />
+              )}
+            </button>
+            <JoeyWordmark
+              className={styles.mobileHeaderWordmark}
+              width={72}
+              height={22}
+            />
+          </div>
           <div className={styles.headerActions}>
             <span
               className={`${styles.status} ${
                 mode === "error" ? styles.errorStatus : ""
               }`}
+              data-mode={mode}
               aria-live="polite"
             >
-              {statusCopy}
+              <span className={styles.statusDot} aria-hidden="true" />
+              <span className={styles.statusText}>{statusCopy}</span>
             </span>
           </div>
         </header>
