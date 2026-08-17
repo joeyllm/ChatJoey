@@ -42,3 +42,14 @@ to `beta` (`beta.joeyllm.ai`) for testing against the real Joey LLM model.
 The sibling `ChatDocs` repo has deeper architecture/decisions/state notes,
 but it's due for a cleanup pass and isn't being actively maintained right
 now — treat it as background reference, not a required read.
+
+## S5-A08 test branch notes
+
+- Keyboard and focus coverage lives in `tests/keyboard-focus.spec.ts` and is
+  configured by `playwright.config.ts`.
+- Run it with `npm run test:a08`; the local production test server uses port
+  `3006` and must not deploy the application or require a real API key.
+- Keep Playwright reports and test artifacts out of version control.
+- The S5-A01 drawer test deliberately throws a labelled dependency error until
+  its navigation trigger, Escape handling, and focus restoration exist.
+- Do not change product code solely to make this test-only branch pass.

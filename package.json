@@ -7,7 +7,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:mobile": "playwright test",
+    "test:a07": "playwright test tests/responsive-layout.spec.ts",
+    "test:a08": "playwright test tests/keyboard-focus.spec.ts",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "lucide-react": "^1.31.0",
