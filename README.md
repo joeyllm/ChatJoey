@@ -10,6 +10,38 @@ No core app editing required. Little Joey (default), Evil Joey, and Sydney
 Joey exist so far — switch between them from the sidebar to see it in
 action, and hover a mode's name for a one-line description of what it does.
 
+### Branch review note: Eco Joey
+
+This local branch adds Eco Joey for Sprint 5 issue S5-A15.
+For Sprint 5 review, the local-only client instruction overrides the
+general contribution notes below.
+
+- Purpose: create a calm, environmentally aware Joey Personality for local
+  review.
+- Main changes: added `modes/eco-joey/`, registered Eco Joey in
+  `modes/index.ts`, and gave it an independent prompt, theme, icon, welcome
+  text, and disclaimer.
+- Local branch: `sunwen/eco-joey`.
+- Local run steps: install dependencies with `npm install`, run
+  `npm run dev`, then select Eco Joey from the Joey Modes list.
+- Test plan: verify Eco Joey appears in the sidebar, can be selected in
+  local demo/mock mode, keeps chat interactions working, and passes ESLint
+  and TypeScript checks.
+- Local checks completed on 17 August 2026: `npm run lint`,
+  `npx tsc --noEmit`, `npm run build`, desktop Joey Mode switching,
+  Enter/Shift+Enter composer behaviour, New Chat reset, local mock reply,
+  and a 390x844 mobile overflow check.
+- Limitations: no API key is used, no real JoeyLLM API is tested, and no
+  Vercel or online deployment is performed.
+- Review notes: on the current `origin/main` baseline, the 390px mobile
+  sidebar remains visually cramped and mode selection is not reliable from
+  the squeezed sidebar; this is tracked by the mobile-first workstream, not
+  by the Eco Joey mode itself. `npm audit --audit-level=high` reports
+  upstream `next` dependency-chain advisories in `postcss` and `sharp`;
+  fixing them requires a Next version outside the current dependency range.
+- AI-tool contribution: Codex helped draft and implement the isolated Eco
+  Joey mode files and this README review note.
+
 ## 🚀 Run it locally
 
 ```bash
