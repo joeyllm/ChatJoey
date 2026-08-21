@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Menu, PanelLeftClose, PanelLeftOpen, Plus, X } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen, Plus } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import styles from "./page.module.css";
@@ -102,14 +102,10 @@ export default function Home() {
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isResizingSidebar, setIsResizingSidebar] = useState(false);
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
-  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [selectedModeId, setSelectedModeId] = useState(defaultMode.id);
   const nextMessageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
-  const sidebarToggleRef = useRef<HTMLButtonElement>(null);
-  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
   const isDraggingSidebarRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -121,44 +117,6 @@ export default function Home() {
       abortControllerRef.current?.abort();
     };
   }, []);
-
-  useEffect(() => {
-    const mobileQuery = window.matchMedia("(max-width: 767px)");
-
-    function syncMobileViewport() {
-      setIsMobileViewport(mobileQuery.matches);
-      if (!mobileQuery.matches) {
-        setMobileDrawerOpen(false);
-      }
-    }
-
-    syncMobileViewport();
-    mobileQuery.addEventListener("change", syncMobileViewport);
-    return () => mobileQuery.removeEventListener("change", syncMobileViewport);
-  }, []);
-
-  useEffect(() => {
-    if (!isMobileViewport || !mobileDrawerOpen) {
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    function closeOnEscape(event: globalThis.KeyboardEvent) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        setMobileDrawerOpen(false);
-        requestAnimationFrame(() => mobileMenuButtonRef.current?.focus());
-      }
-    }
-
-    window.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [isMobileViewport, mobileDrawerOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -182,16 +140,6 @@ export default function Home() {
     setSidebarCollapsed((collapsed) => !collapsed);
   }
 
-  function openMobileDrawer() {
-    setMobileDrawerOpen(true);
-    requestAnimationFrame(() => sidebarToggleRef.current?.focus());
-  }
-
-  function closeMobileDrawer() {
-    setMobileDrawerOpen(false);
-    requestAnimationFrame(() => mobileMenuButtonRef.current?.focus());
-  }
-
   function handleNewChat() {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -202,15 +150,9 @@ export default function Home() {
     setErrorMessage(null);
     setDraft("");
     nextMessageId.current = 1;
-    if (isMobileViewport) {
-      closeMobileDrawer();
-    }
   }
 
   function handleSelectMode(modeId: string) {
-    if (isMobileViewport) {
-      closeMobileDrawer();
-    }
     if (modeId === selectedModeId) {
       return;
     }
@@ -408,26 +350,17 @@ export default function Home() {
     mock: copy.previewStatus,
     error: copy.errorStatus,
   }[mode];
-  const sidebarContentsVisible = isMobileViewport || !sidebarCollapsed;
-  const effectiveSidebarCollapsed = !isMobileViewport && sidebarCollapsed;
 
   return (
     <main className={styles.page} style={themeStyle(currentMode.theme)}>
       <aside
-        id="joey-navigation"
         ref={sidebarRef}
         className={`${styles.sidebar} ${
           isResizingSidebar ? styles.sidebarNoTransition : ""
-        } ${effectiveSidebarCollapsed ? styles.sidebarCollapsed : ""} ${
-          mobileDrawerOpen ? styles.sidebarOpen : ""
-        }`}
+        } ${sidebarCollapsed ? styles.sidebarCollapsed : ""}`}
         aria-label="Joey LLM"
-        aria-hidden={isMobileViewport && !mobileDrawerOpen}
-        inert={isMobileViewport && !mobileDrawerOpen}
         style={
-          isMobileViewport
-            ? undefined
-            : sidebarCollapsed
+          sidebarCollapsed
             ? { width: SIDEBAR_COLLAPSED_WIDTH, flexBasis: SIDEBAR_COLLAPSED_WIDTH }
             : sidebarWidth !== null
               ? { width: sidebarWidth, flexBasis: sidebarWidth }
@@ -435,23 +368,13 @@ export default function Home() {
         }
       >
         <button
-          ref={sidebarToggleRef}
           type="button"
           className={styles.sidebarToggle}
-          onClick={isMobileViewport ? closeMobileDrawer : toggleSidebarCollapsed}
-          aria-expanded={isMobileViewport ? mobileDrawerOpen : !sidebarCollapsed}
-          aria-controls="joey-navigation"
-          aria-label={
-            isMobileViewport
-              ? "Close navigation"
-              : sidebarCollapsed
-                ? "Expand sidebar"
-                : "Collapse sidebar"
-          }
+          onClick={toggleSidebarCollapsed}
+          aria-expanded={!sidebarCollapsed}
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
-          {isMobileViewport ? (
-            <X size={24} aria-hidden="true" />
-          ) : sidebarCollapsed ? (
+          {sidebarCollapsed ? (
             <PanelLeftOpen size={24} aria-hidden="true" />
           ) : (
             <PanelLeftClose size={24} aria-hidden="true" />
@@ -459,23 +382,23 @@ export default function Home() {
         </button>
         <div
           className={`${styles.identity} ${
-            effectiveSidebarCollapsed ? styles.identityCollapsed : ""
+            sidebarCollapsed ? styles.identityCollapsed : ""
           }`}
         >
           <currentMode.icon
             className={styles.mark}
-            width={effectiveSidebarCollapsed ? 34 : 42}
-            height={effectiveSidebarCollapsed ? 34 : 42}
+            width={sidebarCollapsed ? 34 : 42}
+            height={sidebarCollapsed ? 34 : 42}
             aria-hidden="true"
           />
-          {sidebarContentsVisible ? (
+          {sidebarCollapsed ? null : (
             <JoeyWordmark className={styles.productName} width={81} height={24} />
-          ) : null}
+          )}
         </div>
-        {sidebarContentsVisible ? (
+        {sidebarCollapsed ? null : (
           <p className={styles.sessionNotice}>{copy.sessionNotice}</p>
-        ) : null}
-        {sidebarContentsVisible ? (
+        )}
+        {sidebarCollapsed ? null : (
           <button
             type="button"
             className={styles.newChatButton}
@@ -484,14 +407,14 @@ export default function Home() {
             <Plus size={16} aria-hidden="true" />
             {copy.newChat}
           </button>
-        ) : null}
-        {sidebarContentsVisible ? (
+        )}
+        {sidebarCollapsed ? null : (
           <>
             <p className={styles.sectionLabel}>{copy.joeyModesHeading}</p>
             <p className={styles.sectionSubtext}>{copy.joeyModesSubtext}</p>
           </>
-        ) : null}
-        {sidebarContentsVisible ? (
+        )}
+        {sidebarCollapsed ? null : (
           <ul className={styles.modeList}>
             {modes.map((candidate) => (
               <li key={candidate.id}>
@@ -518,8 +441,8 @@ export default function Home() {
               </li>
             ))}
           </ul>
-        ) : null}
-        {sidebarContentsVisible && !isMobileViewport ? (
+        )}
+        {sidebarCollapsed ? null : (
           <div
             className={styles.sidebarResizeHandle}
             role="separator"
@@ -536,33 +459,10 @@ export default function Home() {
             onLostPointerCapture={handleSidebarResizePointerCancel}
             onKeyDown={handleSidebarResizeKeyDown}
           />
-        ) : null}
+        )}
       </aside>
-      {isMobileViewport && mobileDrawerOpen ? (
-        <button
-          type="button"
-          className={styles.sidebarBackdrop}
-          aria-label="Close navigation"
-          onClick={closeMobileDrawer}
-        />
-      ) : null}
-      <section
-        className={styles.chatShell}
-        aria-label={copy.chatAriaLabel}
-        inert={isMobileViewport && mobileDrawerOpen}
-      >
+      <section className={styles.chatShell} aria-label={copy.chatAriaLabel}>
         <header className={styles.header}>
-          <button
-            ref={mobileMenuButtonRef}
-            type="button"
-            className={styles.mobileMenuButton}
-            onClick={openMobileDrawer}
-            aria-controls="joey-navigation"
-            aria-expanded={mobileDrawerOpen}
-            aria-label="Open navigation"
-          >
-            <Menu size={22} aria-hidden="true" />
-          </button>
           <div className={styles.headerActions}>
             <span
               className={`${styles.status} ${
