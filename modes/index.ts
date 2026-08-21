@@ -2,6 +2,7 @@ import coastalJoey from "./coastal-joey/mode";
 import evilJoey from "./evil-joey/mode";
 import ecoJoey from "./eco-joey/mode";
 import littleJoey from "./little-joey/mode";
+import outbackJoey from "./outback-joey/mode";
 import sportsJoey from "./sports-joey/mode";
 import sydneyJoey from "./sydney-joey/mode";
 
@@ -16,6 +17,7 @@ export const modes = [
   sportsJoey,
   ecoJoey,
   coastalJoey,
+  outbackJoey,
 ];
 
 const DEFAULT_MODE_ID = "little-joey";
