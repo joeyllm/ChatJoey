@@ -15,9 +15,9 @@ A pluggable system so contributors can add a new Joey personality (prompt,
 name, theme, icon, mascot) as a small folder under `modes/` + PR, without
 touching core app code (`app/page.tsx`, `app/api/`, etc). Implemented — see
 `modes/AGENTS.md` for the rules, `modes/template/` to start a new mode, and
-`README.md` for the contributor workflow. Little Joey, Evil Joey, and Sydney
-Joey exist as working modes; the sidebar has a live switcher between
-registered modes.
+`README.md` for the contributor workflow. Little Joey, Evil Joey, Sydney
+Joey, Sports Joey, Eco Joey, Coastal Joey, and Outback Joey exist as working
+modes; the sidebar has a live switcher between registered modes.
 
 Mode prompts are delivered as a primed user+assistant turn pair, not a
 `role: "system"` message — see the comment on `prompt` in `modes/types.ts`
