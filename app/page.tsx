@@ -102,10 +102,14 @@ export default function Home() {
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isResizingSidebar, setIsResizingSidebar] = useState(false);
+  const [isMobileLayout, setIsMobileLayout] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [selectedModeId, setSelectedModeId] = useState(defaultMode.id);
   const nextMessageId = useRef(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerCloseButtonRef = useRef<HTMLButtonElement>(null);
   const isDraggingSidebarRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -136,8 +140,80 @@ export default function Home() {
     };
   }, [isResizingSidebar]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      "(max-width: 767px), (max-height: 520px) and (max-width: 900px)",
+    );
+    const updateLayout = () => {
+      setIsMobileLayout(mediaQuery.matches);
+      if (mediaQuery.matches) {
+        setSidebarCollapsed(false);
+      } else {
+        setIsMobileNavOpen(false);
+      }
+    };
+
+    updateLayout();
+    mediaQuery.addEventListener("change", updateLayout);
+    return () => mediaQuery.removeEventListener("change", updateLayout);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileLayout || !isMobileNavOpen) {
+      return;
+    }
+
+    drawerCloseButtonRef.current?.focus();
+    const handleEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setIsMobileNavOpen(false);
+        requestAnimationFrame(() => mobileMenuButtonRef.current?.focus());
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMobileLayout, isMobileNavOpen]);
+
   function toggleSidebarCollapsed() {
     setSidebarCollapsed((collapsed) => !collapsed);
+  }
+
+  function openMobileNavigation() {
+    setIsMobileNavOpen(true);
+  }
+
+  function closeMobileNavigation({ restoreFocus = true } = {}) {
+    setIsMobileNavOpen(false);
+    if (restoreFocus) {
+      requestAnimationFrame(() => mobileMenuButtonRef.current?.focus());
+    }
+  }
+
+  function handleDrawerKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (!isMobileLayout || !isMobileNavOpen || event.key !== "Tab") {
+      return;
+    }
+
+    const focusable = Array.from(
+      event.currentTarget.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((element) => !element.hidden);
+    if (focusable.length === 0) {
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   function handleNewChat() {
@@ -154,10 +230,16 @@ export default function Home() {
 
   function handleSelectMode(modeId: string) {
     if (modeId === selectedModeId) {
+      if (isMobileLayout) {
+        closeMobileNavigation();
+      }
       return;
     }
     setSelectedModeId(modeId);
     handleNewChat();
+    if (isMobileLayout) {
+      closeMobileNavigation();
+    }
   }
 
   function handleSidebarResizePointerDown(
@@ -353,21 +435,47 @@ export default function Home() {
 
   return (
     <main className={styles.page} style={themeStyle(currentMode.theme)}>
+      <button
+        type="button"
+        className={`${styles.drawerBackdrop} ${
+          isMobileNavOpen ? styles.drawerBackdropVisible : ""
+        }`}
+        aria-label="Close navigation"
+        aria-hidden={!isMobileNavOpen}
+        tabIndex={isMobileNavOpen ? 0 : -1}
+        onClick={() => closeMobileNavigation()}
+      />
       <aside
         id="joey-sidebar"
         ref={sidebarRef}
         className={`${styles.sidebar} ${
           isResizingSidebar ? styles.sidebarNoTransition : ""
-        } ${sidebarCollapsed ? styles.sidebarCollapsed : ""}`}
+        } ${sidebarCollapsed ? styles.sidebarCollapsed : ""} ${
+          isMobileNavOpen ? styles.mobileDrawerOpen : ""
+        }`}
         aria-label="Joey LLM"
+        aria-hidden={isMobileLayout && !isMobileNavOpen}
+        inert={isMobileLayout && !isMobileNavOpen ? true : undefined}
+        onKeyDown={handleDrawerKeyDown}
         style={
-          sidebarCollapsed
+          isMobileLayout
+            ? undefined
+            : sidebarCollapsed
             ? { width: SIDEBAR_COLLAPSED_WIDTH, flexBasis: SIDEBAR_COLLAPSED_WIDTH }
             : sidebarWidth !== null
               ? { width: sidebarWidth, flexBasis: sidebarWidth }
               : undefined
         }
       >
+        <button
+          ref={drawerCloseButtonRef}
+          type="button"
+          className={styles.drawerCloseButton}
+          onClick={() => closeMobileNavigation()}
+          aria-label="Close navigation"
+        >
+          <PanelLeftClose size={24} aria-hidden="true" />
+        </button>
         <button
           type="button"
           className={styles.sidebarToggle}
@@ -467,18 +575,15 @@ export default function Home() {
         <header className={styles.header}>
           <div className={styles.mobileHeaderIdentity}>
             <button
+              ref={mobileMenuButtonRef}
               type="button"
               className={styles.mobileMenuButton}
-              onClick={toggleSidebarCollapsed}
-              aria-expanded={!sidebarCollapsed}
+              onClick={openMobileNavigation}
+              aria-expanded={isMobileNavOpen}
               aria-controls="joey-sidebar"
-              aria-label={sidebarCollapsed ? "Expand navigation" : "Collapse navigation"}
+              aria-label="Open navigation"
             >
-              {sidebarCollapsed ? (
-                <PanelLeftOpen size={22} aria-hidden="true" />
-              ) : (
-                <PanelLeftClose size={22} aria-hidden="true" />
-              )}
+              <PanelLeftOpen size={22} aria-hidden="true" />
             </button>
             <JoeyWordmark
               className={styles.mobileHeaderWordmark}
