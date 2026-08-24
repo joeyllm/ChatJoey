@@ -140,6 +140,11 @@ async function sendMessage(page: Page, message: string) {
   ).toBeVisible();
 }
 
+async function selectMobileMode(page: Page, name: string) {
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  await page.getByRole("button", { name, exact: true }).click();
+}
+
 for (const viewport of targetViewports) {
   test.describe(viewport.name, () => {
     test.use({
@@ -230,6 +235,52 @@ for (const viewport of breakpointViewports) {
     });
   });
 }
+
+test.describe("mobile personality welcome scenes", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("keeps Sydney Joey's speech bubble inside the viewport", async ({
+    page,
+  }) => {
+    await openReadyPage(page);
+    await selectMobileMode(page, "Sydney Joey");
+
+    await expectInsideViewport(
+      page.getByText(
+        "G’day, I’m Sydney Joey. Ask me anything — I know my way round the Harbour City.",
+        { exact: true },
+      ),
+      390,
+      844,
+    );
+    await expectNoPageHorizontalOverflow(page);
+  });
+
+  test("keeps Coastal Joey's speech above the wave artwork", async ({
+    page,
+  }) => {
+    await openReadyPage(page);
+    await selectMobileMode(page, "Coastal Joey");
+
+    const speech = page.getByText(
+      "G’day, I’m Coastal Joey. Let’s catch a wave and explore Australia’s coastline.",
+      { exact: true },
+    );
+    await expect(speech).toBeVisible();
+
+    const speechIsTopmost = await speech.evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      const topmost = document.elementFromPoint(
+        box.left + box.width / 2,
+        box.top + box.height / 2,
+      );
+      return topmost === element || element.contains(topmost);
+    });
+
+    expect(speechIsTopmost).toBe(true);
+    await expectNoPageHorizontalOverflow(page);
+  });
+});
 
 test.describe("A04 Markdown overflow containment", () => {
   test.use({

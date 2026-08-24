@@ -465,6 +465,7 @@
 
 .speechBubble {
   position: relative;
+  z-index: 5;
   flex: 1 1 210px;
   min-width: 0;
   max-width: 250px;
@@ -914,6 +915,7 @@
   .introRow {
     width: 100%;
     justify-content: center;
+    transform: none !important;
   }
 
   .welcome h1 {
