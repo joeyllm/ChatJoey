@@ -43,13 +43,13 @@ The sibling `ChatDocs` repo has deeper architecture/decisions/state notes,
 but it's due for a cleanup pass and isn't being actively maintained right
 now — treat it as background reference, not a required read.
 
-## S5-A08 test branch notes
+## Sprint 5 mobile integration notes
 
-- Keyboard and focus coverage lives in `tests/keyboard-focus.spec.ts` and is
-  configured by `playwright.config.ts`.
-- Run it with `npm run test:a08`; the local production test server uses port
-  `3006` and must not deploy the application or require a real API key.
-- Keep Playwright reports and test artifacts out of version control.
-- The S5-A01 drawer test deliberately throws a labelled dependency error until
-  its navigation trigger, Escape handling, and focus restoration exist.
-- Do not change product code solely to make this test-only branch pass.
+- This branch integrates S5-A01 through S5-A05 and validates S5-A07/A08.
+- Responsive layout coverage lives in `tests/responsive-layout.spec.ts`;
+  keyboard and focus coverage lives in `tests/keyboard-focus.spec.ts`.
+- Run `npm run test:mobile`; the local production test server uses port `3005`.
+- Mobile navigation must remain closed and inert by default, restore focus to
+  its trigger when closed, and keep focus inside while open.
+- Keep Playwright reports and test artifacts out of version control. Do not
+  deploy, use a real API key, or mix unrelated changes into this branch.

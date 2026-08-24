@@ -18,9 +18,9 @@ const targetViewports: ViewportCase[] = [
     height: 390,
   },
   {
-    name: "mobile landscape 915x412",
-    width: 915,
-    height: 412,
+    name: "mobile landscape 667x375",
+    width: 667,
+    height: 375,
   },
   {
     name: "tablet portrait 768x1024",
@@ -337,8 +337,9 @@ test.describe("A05 desktop behavior regression", () => {
       }),
     ).toBeAttached();
 
-    const collapsedBox = await sidebar.boundingBox();
-    expect(collapsedBox?.width).toBeCloseTo(72, 0);
+    await expect
+      .poll(async () => (await sidebar.boundingBox())?.width)
+      .toBeCloseTo(72, 0);
 
     await page
       .getByRole("button", {
@@ -352,8 +353,9 @@ test.describe("A05 desktop behavior regression", () => {
       }),
     ).toBeAttached();
 
-    const expandedBox = await sidebar.boundingBox();
-    expect(expandedBox?.width).toBeGreaterThanOrEqual(200);
+    await expect
+      .poll(async () => (await sidebar.boundingBox())?.width)
+      .toBeGreaterThanOrEqual(200);
   });
 
   test("preserves Joey Mode switching without page overflow", async ({
@@ -378,7 +380,7 @@ test.describe("A05 desktop behavior regression", () => {
   });
 });
 
-test.describe("S5-A01 dependency", () => {
+test.describe("S5-A01 mobile navigation integration", () => {
   test.use({
     viewport: {
       width: 844,
@@ -386,57 +388,23 @@ test.describe("S5-A01 dependency", () => {
     },
   });
 
-  test("requires the completed mobile navigation drawer", async ({
-    page,
-  }) => {
+  test("opens closed by default and closes with Escape", async ({ page }) => {
     await openReadyPage(page);
 
     const navigationButton = page.getByRole("button", {
-      name: /navigation/i,
+      name: "Open navigation",
     });
+    const drawer = page.getByRole("complementary", { name: "Joey LLM" });
 
-    if ((await navigationButton.count()) === 0) {
-      throw new Error(
-        [
-          "S5-A07 BLOCKED BY S5-A01:",
-          "The mobile navigation trigger is not available.",
-          "Complete the accessible mobile drawer before final A07 validation.",
-        ].join(" "),
-      );
-    }
-
-    const initialExpanded =
-      await navigationButton.getAttribute("aria-expanded");
-
-    if (initialExpanded !== "false") {
-      throw new Error(
-        [
-          "S5-A07 BLOCKED BY S5-A01:",
-          "Mobile navigation is not closed by default.",
-          `Received aria-expanded=${initialExpanded}.`,
-        ].join(" "),
-      );
-    }
+    await expect(navigationButton).toHaveAttribute("aria-expanded", "false");
+    await expect(drawer).toBeHidden();
 
     await navigationButton.click();
-
-    await expect(navigationButton).toHaveAttribute(
-      "aria-expanded",
-      "true",
-    );
+    await expect(navigationButton).toHaveAttribute("aria-expanded", "true");
+    await expect(drawer).toBeVisible();
 
     await page.keyboard.press("Escape");
-
-    const expandedAfterEscape =
-      await navigationButton.getAttribute("aria-expanded");
-
-    if (expandedAfterEscape !== "false") {
-      throw new Error(
-        [
-          "S5-A07 BLOCKED BY S5-A01:",
-          "The mobile drawer did not close when Escape was pressed.",
-        ].join(" "),
-      );
-    }
+    await expect(navigationButton).toHaveAttribute("aria-expanded", "false");
+    await expect(drawer).toBeHidden();
   });
 });

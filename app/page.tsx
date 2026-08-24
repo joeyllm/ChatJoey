@@ -200,7 +200,7 @@ export default function Home() {
       event.currentTarget.querySelectorAll<HTMLElement>(
         'button:not([disabled]), [href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
       ),
-    ).filter((element) => !element.hidden);
+    ).filter((element) => element.getClientRects().length > 0);
     if (focusable.length === 0) {
       return;
     }
