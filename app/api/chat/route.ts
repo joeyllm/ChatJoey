@@ -155,10 +155,13 @@ export async function POST(request: Request) {
   }
 
   const baseUrlValue = process.env.JOEYBACKEND_URL?.trim();
+  // Server-side only. Sent as `Authorization: Bearer` to JoeyBackend; never
+  // exposed to the browser (this route runs on the Node server).
+  const apiKey = process.env.JOEYLLM_API_KEY?.trim();
   const localMockRequested = process.env.JOEYBACKEND_MOCK_MODE === "true";
   const localPreview =
     process.env.NODE_ENV !== "production" &&
-    (localMockRequested || !baseUrlValue);
+    (localMockRequested || !baseUrlValue || !apiKey);
 
   if (localPreview) {
     return new Response(textStream("Local preview response."), {
@@ -169,7 +172,7 @@ export async function POST(request: Request) {
     });
   }
 
-  if (!baseUrlValue) {
+  if (!baseUrlValue || !apiKey) {
     return NextResponse.json(
       { error: "JoeyBackend is not configured." },
       { status: 503 },
@@ -181,7 +184,10 @@ export async function POST(request: Request) {
   try {
     const upstream = await fetch(`${baseUrl}/chat`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
       body: JSON.stringify({ messages, ...(mode ? { mode } : {}) }),
       cache: "no-store",
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
