@@ -1,7 +1,6 @@
 import type { JoeyMode } from "../types";
 import icon from "./icon";
 import mascot from "./mascot";
-import prompt from "./prompt";
 import theme from "./theme";
 
 // This file is a starting point, not a registered mode — copy this whole
@@ -32,8 +31,9 @@ const templateMode: JoeyMode = {
   // Footer disclaimer sentence for this mode.
   disclaimer: "Template Joey is still learning and can get things wrong.",
 
-  // See prompt.ts, theme.ts, icon.tsx, and mascot.tsx in this folder.
-  prompt,
+  // See theme.ts, icon.tsx, and mascot.tsx in this folder. The persona /
+  // tone text is server-side in JoeyBackend (src/persona.rs), keyed by the
+  // `id` above.
   theme,
   icon,
   mascot,

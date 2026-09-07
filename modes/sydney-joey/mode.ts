@@ -1,7 +1,6 @@
 import type { JoeyMode } from "../types";
 import icon from "./icon";
 import mascot from "./mascot";
-import prompt from "./prompt";
 import theme from "./theme";
 
 const sydneyJoeyMode: JoeyMode = {
@@ -13,7 +12,6 @@ const sydneyJoeyMode: JoeyMode = {
   welcomeTitle: "What can Sydney Joey help you with today?",
   disclaimer:
     "Sydney Joey is still learning and can get things wrong. Please check important information.",
-  prompt,
   theme,
   icon,
   mascot,

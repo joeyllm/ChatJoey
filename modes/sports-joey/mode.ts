@@ -1,7 +1,6 @@
 import type { JoeyMode } from "../types";
 import icon from "./icon";
 import mascot from "./mascot";
-import prompt from "./prompt";
 import theme from "./theme";
 
 const sportsJoeyMode: JoeyMode = {
@@ -13,7 +12,6 @@ const sportsJoeyMode: JoeyMode = {
   welcomeTitle: "What can Sports Joey help your team tackle today?",
   disclaimer:
     "Sports Joey is still learning and can get things wrong. Check important health, safety, and competition information.",
-  prompt,
   theme,
   icon,
   mascot,

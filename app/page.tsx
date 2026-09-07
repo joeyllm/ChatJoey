@@ -319,22 +319,14 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
-          // Primed as ordinary conversation turns, not a "system" message —
-          // this model doesn't reliably follow persona instructions given
-          // via the system role, and using it would also risk colliding
-          // with whatever internal system prompt the backend already
-          // applies. See modes/AGENTS.md ("prompt.ts is additive").
-          messages: [
-            { role: "user", content: currentMode.prompt },
-            {
-              role: "assistant",
-              content: "Got it — staying in character from here on.",
-            },
-            ...requestMessages.map(({ role, content: messageContent }) => ({
-              role,
-              content: messageContent,
-            })),
-          ],
+          // Persona / mode logic lives in JoeyBackend now. The client just
+          // names the mode; JoeyBackend builds the system prompt and the
+          // final model conversation.
+          mode: currentMode.id,
+          messages: requestMessages.map(({ role, content: messageContent }) => ({
+            role,
+            content: messageContent,
+          })),
         }),
       });
 

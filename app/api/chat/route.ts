@@ -2,15 +2,23 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+/**
+ * Thin proxy to JoeyBackend's `/chat`.
+ *
+ * All persona / mode / model / generation logic now lives in JoeyBackend.
+ * This route only:
+ *   - shape-checks the request,
+ *   - forwards `{ messages, mode }` to JoeyBackend,
+ *   - converts JoeyBackend's NDJSON stream (`{"delta":"..."}` /
+ *     `{"done":true}` / `{"error":{...}}`) into the plain-text delta stream
+ *     the client already consumes.
+ */
+
 type ChatRole = "user" | "assistant";
 
 type ChatMessage = {
   role: ChatRole;
   content: string;
-};
-
-type ModelsResponse = {
-  data?: Array<{ id?: unknown }>;
 };
 
 const MAX_MESSAGES = 50;
@@ -35,38 +43,24 @@ function normaliseBaseUrl(value: string) {
   return value.replace(/\/+$/, "");
 }
 
-async function getModel(
-  baseUrl: string,
-  headers: HeadersInit,
-  configuredModel: string | undefined,
-) {
-  if (configuredModel?.trim()) {
-    return configuredModel.trim();
-  }
-
-  const response = await fetch(`${baseUrl}/v1/models`, {
-    headers,
-    cache: "no-store",
-    signal: AbortSignal.timeout(30_000),
+function textStream(text: string): ReadableStream<Uint8Array> {
+  return new ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode(text));
+      controller.close();
+    },
   });
-
-  if (!response.ok) {
-    throw new Error(`Joey LLM models request failed with ${response.status}`);
-  }
-
-  const payload = (await response.json()) as ModelsResponse;
-  const model = payload.data?.[0]?.id;
-
-  if (typeof model !== "string" || !model) {
-    throw new Error("Joey LLM returned no usable model");
-  }
-
-  return model;
 }
 
-function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
+/**
+ * NDJSON (from JoeyBackend) -> plain-text delta stream (to the client).
+ * Throws if the backend sends an `{"error":...}` line.
+ */
+function ndjsonToTextStream(
+  upstream: Response,
+): ReadableStream<Uint8Array> {
   if (!upstream.body) {
-    throw new Error("Joey LLM returned an empty stream");
+    throw new Error("JoeyBackend returned an empty stream");
   }
 
   const reader = upstream.body.getReader();
@@ -74,52 +68,33 @@ function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder();
   let buffer = "";
 
-  function extractDelta(line: string): string | null {
-    if (!line.startsWith("data: ")) {
-      return null;
-    }
-
-    const data = line.slice(6).trim();
-    if (data === "[DONE]") {
-      return null;
-    }
-
-    try {
-      const chunk = JSON.parse(data) as {
-        choices?: Array<{ delta?: { content?: unknown } }>;
-      };
-      const delta = chunk.choices?.[0]?.delta?.content;
-      return typeof delta === "string" ? delta : null;
-    } catch {
-      return null;
-    }
-  }
-
-  function enqueueDelta(
+  function handleLine(
     controller: ReadableStreamDefaultController<Uint8Array>,
     line: string,
   ) {
-    const delta = extractDelta(line);
-    if (delta) {
-      controller.enqueue(encoder.encode(delta));
-    }
-  }
-
-  function flushBufferedLines(
-    controller: ReadableStreamDefaultController<Uint8Array>,
-    streamComplete: boolean,
-  ) {
-    const lines = buffer.split(/\r?\n/);
-    buffer = lines.pop() ?? "";
-
-    for (const line of lines) {
-      enqueueDelta(controller, line);
+    const trimmed = line.trim();
+    if (!trimmed) {
+      return;
     }
 
-    if (streamComplete && buffer) {
-      enqueueDelta(controller, buffer);
-      buffer = "";
+    let event: unknown;
+    try {
+      event = JSON.parse(trimmed);
+    } catch {
+      return;
     }
+
+    if (!event || typeof event !== "object") {
+      return;
+    }
+
+    const record = event as Record<string, unknown>;
+    if (typeof record.delta === "string" && record.delta.length > 0) {
+      controller.enqueue(encoder.encode(record.delta));
+    } else if (record.error) {
+      controller.error(new Error("JoeyBackend reported an error"));
+    }
+    // `{ done: true }` needs no action — the stream closes on its own.
   }
 
   return new ReadableStream<Uint8Array>({
@@ -129,12 +104,19 @@ function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
       if (value) {
         buffer += decoder.decode(value, { stream: true });
       }
-
       if (done) {
         buffer += decoder.decode();
       }
 
-      flushBufferedLines(controller, done);
+      const lines = buffer.split(/\r?\n/);
+      buffer = done ? "" : (lines.pop() ?? "");
+
+      for (const line of lines) {
+        handleLine(controller, line);
+      }
+      if (done && buffer) {
+        handleLine(controller, buffer);
+      }
 
       if (done) {
         controller.close();
@@ -142,15 +124,6 @@ function assistantDeltaStream(upstream: Response): ReadableStream<Uint8Array> {
     },
     cancel() {
       return reader.cancel();
-    },
-  });
-}
-
-function textStream(text: string): ReadableStream<Uint8Array> {
-  return new ReadableStream<Uint8Array>({
-    start(controller) {
-      controller.enqueue(new TextEncoder().encode(text));
-      controller.close();
     },
   });
 }
@@ -164,10 +137,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON request body." }, { status: 400 });
   }
 
-  const messages =
-    body && typeof body === "object"
-      ? (body as Record<string, unknown>).messages
-      : undefined;
+  const record =
+    body && typeof body === "object" ? (body as Record<string, unknown>) : {};
+  const messages = record.messages;
+  const mode = typeof record.mode === "string" ? record.mode : undefined;
 
   if (
     !Array.isArray(messages) ||
@@ -181,12 +154,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const baseUrlValue = process.env.JOEYLLM_API_URL?.trim();
-  const apiKey = process.env.JOEYLLM_API_KEY?.trim();
-  const localMockRequested = process.env.JOEYLLM_MOCK_MODE === "true";
+  const baseUrlValue = process.env.JOEYBACKEND_URL?.trim();
+  const localMockRequested = process.env.JOEYBACKEND_MOCK_MODE === "true";
   const localPreview =
     process.env.NODE_ENV !== "production" &&
-    (localMockRequested || !baseUrlValue || !apiKey);
+    (localMockRequested || !baseUrlValue);
 
   if (localPreview) {
     return new Response(textStream("Local preview response."), {
@@ -197,53 +169,48 @@ export async function POST(request: Request) {
     });
   }
 
-  if (!baseUrlValue || !apiKey) {
+  if (!baseUrlValue) {
     return NextResponse.json(
-      { error: "The Joey LLM service is not configured." },
+      { error: "JoeyBackend is not configured." },
       { status: 503 },
     );
   }
 
   const baseUrl = normaliseBaseUrl(baseUrlValue);
-  const headers = {
-    Authorization: `Bearer ${apiKey}`,
-    "Content-Type": "application/json",
-  };
 
   try {
-    const model = await getModel(baseUrl, headers, process.env.JOEYLLM_MODEL);
-    const upstream = await fetch(`${baseUrl}/v1/chat/completions`, {
+    const upstream = await fetch(`${baseUrl}/chat`, {
       method: "POST",
-      headers,
-      body: JSON.stringify({
-        model,
-        messages,
-        max_tokens: 500,
-        temperature: 0.7,
-        stream: true,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages, ...(mode ? { mode } : {}) }),
       cache: "no-store",
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
 
     if (!upstream.ok) {
-      throw new Error(`Joey LLM chat request failed with ${upstream.status}`);
+      const detail = (await upstream
+        .json()
+        .catch(() => null)) as { error?: { message?: string } } | null;
+      const message = detail?.error?.message;
+      return NextResponse.json(
+        { error: message ?? "JoeyBackend rejected the request." },
+        { status: upstream.status === 400 ? 400 : 502 },
+      );
     }
 
-    return new Response(assistantDeltaStream(upstream), {
+    return new Response(ndjsonToTextStream(upstream), {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "X-Chat-Mode": "live",
-        "X-Chat-Model": model,
       },
     });
   } catch (error) {
     console.error(
-      "Joey LLM proxy error:",
+      "JoeyBackend proxy error:",
       error instanceof Error ? error.message : "Unknown upstream error",
     );
     return NextResponse.json(
-      { error: "Could not reach Joey LLM. Please try again." },
+      { error: "Could not reach JoeyBackend. Please try again." },
       { status: 502 },
     );
   }

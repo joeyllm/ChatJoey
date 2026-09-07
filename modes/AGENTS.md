@@ -1,8 +1,8 @@
 # Joey Modes — rules for every mode
 
-A Joey Mode is a personality swap (prompt, name, theme colours, icon,
-mascot), not a fork of the app. If you're building or reviewing a mode,
-these rules apply.
+A Joey Mode is a presentation swap (name, welcome copy, theme colours,
+icon, mascot), not a fork of the app. If you're building or reviewing a
+mode, these rules apply.
 
 ## Where you work
 
@@ -11,19 +11,17 @@ should not need to open `app/page.tsx`, `app/api/`, `app/globals.css`, or
 any other shared app code to build a mode. If a mode idea seems to require
 that, stop and raise it — it's a framework change, not a mode.
 
-## `prompt.ts` is additive
+## The persona / tone text is server-side
 
-A mode's prompt adds instructions on top of Joey's normal behaviour
-(personality, tone, mode-specific rules). It does not replace Joey's real
-backend system prompt, and it should not attempt to override safety or
-backend behaviour — that's out of scope for a mode.
+A mode's actual instructions (personality, tone, mode-specific rules) live
+in **JoeyBackend** (`src/persona.rs`), keyed by the mode `id`. The client
+only sends `mode: "<id>"` to `/api/chat`; JoeyBackend builds the base
+persona + mode system prompt and constructs the model conversation.
 
-It's delivered as a primed user+assistant turn pair ahead of the real
-conversation, not a `role: "system"` message (see `app/page.tsx`,
-`handleSubmit`) — the current model doesn't reliably follow persona
-instructions given via system role, and this also means the mode prompt
-can never collide with whatever internal system prompt the backend already
-applies.
+So a mode in this repo is **presentation only**. To change or add the
+behavioural text for a mode, open a PR against JoeyBackend's
+`src/persona.rs`; the two sides are linked by the `id`. A new mode needs an
+`id` that exists in both places.
 
 ## `theme.ts` has limited control
 

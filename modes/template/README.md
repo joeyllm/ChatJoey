@@ -5,8 +5,9 @@
 2. In your copy, edit `mode.ts`: set `id` to match the folder name, then
    fill in `name`, `description`, `welcomeIntro`, `welcomeTitle`, and
    `disclaimer`.
-3. Edit `prompt.ts` — additional instructions for your mode's personality
-   and tone (not a full system prompt).
+3. Add the mode's personality / tone text server-side: a matching entry in
+   JoeyBackend's `src/persona.rs` (`MODES`), keyed by the same `id`. This
+   repo carries no prompt text — only presentation.
 4. Edit `theme.ts` — only the colours you want to change; leave the rest
    commented out to keep Joey's normal defaults.
 5. Replace `icon.tsx` with your own badge art (keep the same component

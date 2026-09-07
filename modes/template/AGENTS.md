@@ -4,10 +4,10 @@ Copy this folder, rename it, then modify these files — and nothing outside
 this mode's folder unless explicitly required:
 
 - `mode.ts` — id, name, description, welcome/disclaimer text. Coordinator
-  only: import from `prompt.ts`/`theme.ts`/`icon.tsx`, don't inline a large
-  prompt or CSS here.
-- `prompt.ts` — additional instructions only (personality, tone, mode
-  rules). This is not a replacement for Joey's real backend system prompt.
+  only: import from `theme.ts`/`icon.tsx`, don't inline CSS here.
+- personality / tone text — **not in this repo**. It lives in JoeyBackend's
+  `src/persona.rs` (`MODES`), keyed by the same `id`. A new mode needs an
+  entry there too.
 - `theme.ts` — a small set of optional colours (`JoeyTheme` in `../types.ts`
   lists all of them). Leave a field out to keep Joey's normal default. No
   arbitrary CSS, layout, or spacing here.
@@ -22,8 +22,9 @@ this mode's folder unless explicitly required:
 Steps:
 
 1. `cp -r modes/template modes/your-mode-id`
-2. Edit `mode.ts`, `prompt.ts`, `theme.ts`, `icon.tsx`, and (optionally)
-   `mascot.tsx` in your new folder.
+2. Edit `mode.ts`, `theme.ts`, `icon.tsx`, and (optionally) `mascot.tsx` in
+   your new folder; add the `id`'s persona entry in JoeyBackend
+   `src/persona.rs`.
 3. Register it in `modes/index.ts` (import + add to the `modes` array).
 4. Preview locally with `npm run dev` and the sidebar switcher, or run
    `NEXT_PUBLIC_JOEY_MODE=your-mode-id npm run dev` to load it by default.

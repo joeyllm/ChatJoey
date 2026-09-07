@@ -1,7 +1,6 @@
 import type { JoeyMode } from "../types";
 import icon from "./icon";
 import mascot from "./mascot";
-import prompt from "./prompt";
 import theme from "./theme";
 
 const coastalJoeyMode: JoeyMode = {
@@ -13,7 +12,6 @@ const coastalJoeyMode: JoeyMode = {
   welcomeTitle: "What can Coastal Joey help you with today?",
   disclaimer:
     "Coastal Joey is still learning. Check official advice for weather, surf and beach safety.",
-  prompt,
   theme,
   icon,
   mascot,
