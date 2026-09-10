@@ -16,6 +16,12 @@ import styles from "./page.module.css";
 import JoeyWordmark from "./components/JoeyWordmark";
 import { activeMode as defaultMode, modes } from "@/modes";
 import type { JoeyTheme } from "@/modes/types";
+import {
+  frontendContext,
+  initTelemetry,
+  setLastInteractionId,
+  trackEvent,
+} from "@/app/lib/telemetry";
 
 type MessageRole = "user" | "assistant";
 
@@ -120,6 +126,13 @@ export default function Home() {
     return () => {
       abortControllerRef.current?.abort();
     };
+  }, []);
+
+  // Anonymous session telemetry: ensure the visitor/session ids exist and
+  // record the initial page view. Runs once on first client render.
+  useEffect(() => {
+    initTelemetry(currentMode.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -235,6 +248,11 @@ export default function Home() {
       }
       return;
     }
+    trackEvent("mode_select", {
+      from: selectedModeId,
+      to: modeId,
+      mode: modeId,
+    });
     setSelectedModeId(modeId);
     handleNewChat();
     if (isMobileLayout) {
@@ -301,6 +319,8 @@ export default function Home() {
       content,
     };
     const requestMessages = [...messages, userMessage];
+    const isFirstTurn = messages.length === 0;
+    const startedAt = Date.now();
 
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -312,6 +332,15 @@ export default function Home() {
     setDraft("");
     setErrorMessage(null);
     setMode("thinking");
+
+    if (isFirstTurn) {
+      trackEvent("chat_start", { mode: currentMode.id });
+    }
+    trackEvent("message_submit", {
+      mode: currentMode.id,
+      turn: requestMessages.length,
+      chars: content.length,
+    });
 
     try {
       const response = await fetch("/api/chat", {
@@ -327,6 +356,8 @@ export default function Home() {
             role,
             content: messageContent,
           })),
+          // Frontend/browser context — stored with the interaction record.
+          client: frontendContext(currentMode.id),
         }),
       });
 
@@ -334,8 +365,16 @@ export default function Home() {
         const payload = (await response
           .json()
           .catch(() => null)) as ChatErrorResponse | null;
+        trackEvent("downtime", {
+          mode: currentMode.id,
+          status: response.status,
+          reason: payload?.error ?? "chat request failed",
+        });
         throw new Error(payload?.error ?? "Invalid chat response");
       }
+
+      const interactionId = response.headers.get("X-Interaction-Id");
+      setLastInteractionId(interactionId);
 
       const chatMode = response.headers.get("X-Chat-Mode");
       if (
@@ -377,11 +416,17 @@ export default function Home() {
               : message,
           ),
         );
+        trackEvent("response_complete", {
+          mode: currentMode.id,
+          chatMode,
+          ms: Date.now() - startedAt,
+        });
         return;
       }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let responseChars = 0;
 
       while (true) {
         const { value, done } = await reader.read();
@@ -389,14 +434,30 @@ export default function Home() {
           break;
         }
 
-        appendAssistantDelta(decoder.decode(value, { stream: true }));
+        const delta = decoder.decode(value, { stream: true });
+        responseChars += delta.length;
+        appendAssistantDelta(delta);
       }
 
       appendAssistantDelta(decoder.decode());
-    } catch {
+      trackEvent("response_complete", {
+        mode: currentMode.id,
+        interactionId: interactionId ?? undefined,
+        chatMode,
+        chars: responseChars,
+        ms: Date.now() - startedAt,
+      });
+    } catch (error) {
       if (controller.signal.aborted) {
         return;
       }
+      // A rejected fetch (never reached the server) is the fallback/downtime
+      // case; anything else is a mid-response error.
+      trackEvent(error instanceof TypeError ? "downtime" : "error", {
+        mode: currentMode.id,
+        message: error instanceof Error ? error.message : "unknown error",
+        ms: Date.now() - startedAt,
+      });
       setErrorMessage(copy.requestFailed);
       setMode("error");
     } finally {
