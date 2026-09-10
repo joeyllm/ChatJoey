@@ -141,6 +141,13 @@ export async function POST(request: Request) {
     body && typeof body === "object" ? (body as Record<string, unknown>) : {};
   const messages = record.messages;
   const mode = typeof record.mode === "string" ? record.mode : undefined;
+  // Frontend/browser context gathered by the client (app/lib/telemetry.ts).
+  // Passed straight through to JoeyBackend, which stores it with the
+  // chat_interactions record. Opaque here.
+  const client =
+    record.client && typeof record.client === "object" && !Array.isArray(record.client)
+      ? (record.client as Record<string, unknown>)
+      : undefined;
 
   if (
     !Array.isArray(messages) ||
@@ -188,7 +195,11 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ messages, ...(mode ? { mode } : {}) }),
+      body: JSON.stringify({
+        messages,
+        ...(mode ? { mode } : {}),
+        ...(client ? { client } : {}),
+      }),
       cache: "no-store",
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
@@ -204,10 +215,15 @@ export async function POST(request: Request) {
       );
     }
 
+    const interactionId = upstream.headers.get("x-interaction-id");
+
     return new Response(ndjsonToTextStream(upstream), {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "X-Chat-Mode": "live",
+        // Surfaced so the client can tie frontend telemetry events to this
+        // conversation's chat_interactions row.
+        ...(interactionId ? { "X-Interaction-Id": interactionId } : {}),
       },
     });
   } catch (error) {
